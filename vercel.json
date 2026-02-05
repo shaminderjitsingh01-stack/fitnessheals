@@ -5,23 +5,14 @@
   "outputDirectory": "dist/client",
   "framework": null,
   "regions": ["sin1"],
-  "functions": {
-    "api/index.js": {
-      "runtime": "edge"
-    }
-  },
   "rewrites": [
-    {
-      "source": "/build/(.*)",
-      "destination": "/build/$1"
-    },
     {
       "source": "/assets/(.*)",
       "destination": "/assets/$1"
     },
     {
       "source": "/(.*)",
-      "destination": "/api/index.js"
+      "destination": "/api/index"
     }
   ]
 }
