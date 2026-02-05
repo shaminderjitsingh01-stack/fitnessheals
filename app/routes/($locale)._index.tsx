@@ -38,13 +38,18 @@ export async function loader(args: LoaderFunctionArgs) {
 }
 
 async function loadCriticalData({context, request}: LoaderFunctionArgs) {
-  const [{shop}] = await Promise.all([
+  const [{shop}, productsData] = await Promise.all([
     context.storefront.query(HOMEPAGE_QUERY),
+    context.storefront.query(PRODUCTS_COUNT_QUERY),
   ]);
+
+  const productsCount = productsData?.products?.nodes?.length || 0;
 
   return {
     shop,
     seo: seoPayload.home({url: request.url}),
+    productsCount,
+    sportsCount: SPORTS.length,
   };
 }
 
@@ -262,7 +267,7 @@ function BlogCard({guide}: {guide: typeof SPORTS_GUIDES[0]}) {
 }
 
 export default function Homepage() {
-  const {featuredProducts} = useLoaderData<typeof loader>();
+  const {featuredProducts, productsCount, sportsCount} = useLoaderData<typeof loader>();
 
   return (
     <>
@@ -272,6 +277,8 @@ export default function Homepage() {
         ctaText="Shop Now"
         ctaLink="/shop"
         backgroundVideo="/hero-video.mp4"
+        sportsCount={sportsCount}
+        productsCount={productsCount}
       />
 
       <SportsGrid />
@@ -424,4 +431,14 @@ const FEATURED_PRODUCTS_QUERY = `#graphql
     }
   }
   ${PRODUCT_CARD_FRAGMENT}
+` as const;
+
+const PRODUCTS_COUNT_QUERY = `#graphql
+  query productsCount {
+    products(first: 250) {
+      nodes {
+        id
+      }
+    }
+  }
 ` as const;

@@ -7,6 +7,8 @@ interface FitnessHeroProps {
   ctaLink?: string;
   backgroundImage?: string;
   backgroundVideo?: string;
+  sportsCount?: number;
+  productsCount?: number;
 }
 
 export function FitnessHero({
@@ -16,6 +18,8 @@ export function FitnessHero({
   ctaLink = '/shop',
   backgroundImage,
   backgroundVideo,
+  sportsCount = 11,
+  productsCount = 0,
 }: FitnessHeroProps) {
   return (
     <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
@@ -93,7 +97,7 @@ export function FitnessHero({
         {/* Badge */}
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/10 mb-8">
           <span className="w-2 h-2 bg-brand-red rounded-full animate-pulse" />
-          <span className="text-white/80 text-sm font-medium">11 Sports. Unlimited Potential.</span>
+          <span className="text-white/80 text-sm font-medium">{sportsCount} Sports. Unlimited Potential.</span>
         </div>
 
         <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-6 leading-[0.9] tracking-tight">
@@ -128,11 +132,11 @@ export function FitnessHero({
         {/* Stats */}
         <div className="mt-16 grid grid-cols-3 gap-8 max-w-lg mx-auto">
           <div className="text-center">
-            <div className="text-3xl md:text-4xl font-black text-white">11</div>
+            <div className="text-3xl md:text-4xl font-black text-white">{sportsCount}</div>
             <div className="text-white/50 text-sm">Sports</div>
           </div>
           <div className="text-center border-x border-white/10">
-            <div className="text-3xl md:text-4xl font-black text-white">500+</div>
+            <div className="text-3xl md:text-4xl font-black text-white">{productsCount > 0 ? `${productsCount}+` : '---'}</div>
             <div className="text-white/50 text-sm">Products</div>
           </div>
           <div className="text-center">
