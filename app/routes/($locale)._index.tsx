@@ -271,6 +271,7 @@ export default function Homepage() {
         subtitle="Premium sports apparel and equipment for athletes who demand the best. From cricket to triathlon, we've got you covered."
         ctaText="Shop Now"
         ctaLink="/shop"
+        backgroundVideo="/hero-video.mp4"
       />
 
       <SportsGrid />

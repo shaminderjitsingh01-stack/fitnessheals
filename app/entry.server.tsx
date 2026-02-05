@@ -36,6 +36,12 @@ export default async function handleRequest(
       'https://www.youtube.com',
       'https://youtube.com',
     ],
+    mediaSrc: [
+      "'self'",
+      'https://cdn.shopify.com',
+      'data:',
+      'blob:',
+    ],
   });
 
   const body = await renderToReadableStream(
