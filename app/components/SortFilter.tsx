@@ -43,33 +43,65 @@ export function SortFilter({
   children,
   collections = [],
 }: Props) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
+
   return (
-    <>
-      <div className="flex items-center justify-between w-full">
+    <div className="flex flex-col lg:flex-row gap-8">
+      {/* Filter Sidebar */}
+      <div className="lg:w-64 flex-shrink-0">
+        {/* Mobile Filter Toggle */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className={
-            'relative flex items-center justify-center w-8 h-8 focus:ring-primary/5'
-          }
+          className="lg:hidden flex items-center gap-2 w-full px-4 py-3 bg-white rounded-lg border border-gray-200 mb-4"
         >
           <IconFilters />
+          <span className="font-semibold">Filters</span>
+          <IconCaret direction={isOpen ? 'up' : 'down'} />
         </button>
-        <SortMenu />
-      </div>
-      <div className="flex flex-col flex-wrap md:flex-row">
-        <div
-          className={`transition-all duration-200 ${
-            isOpen
-              ? 'opacity-100 min-w-full md:min-w-[240px] md:w-[240px] md:pr-8 max-h-full'
-              : 'opacity-0 md:min-w-[0px] md:w-[0px] pr-0 max-h-0 md:max-h-full'
-          }`}
-        >
-          <FiltersDrawer filters={filters} appliedFilters={appliedFilters} />
+
+        {/* Filter Content */}
+        <div className={`${isOpen ? 'block' : 'hidden'} lg:block`}>
+          <div className="bg-white rounded-xl border border-gray-200 p-5">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-bold text-lg text-gray-900">Filters</h3>
+              {appliedFilters.length > 0 && (
+                <Link
+                  to={useLocation().pathname}
+                  className="text-sm text-brand-red hover:underline"
+                >
+                  Clear all
+                </Link>
+              )}
+            </div>
+
+            {/* Applied Filters */}
+            {appliedFilters.length > 0 && (
+              <div className="mb-6 pb-6 border-b border-gray-200">
+                <p className="text-sm font-medium text-gray-500 mb-3">Active Filters</p>
+                <div className="flex flex-wrap gap-2">
+                  <AppliedFilters filters={appliedFilters} />
+                </div>
+              </div>
+            )}
+
+            {/* Filter Groups */}
+            <FiltersDrawer filters={filters} appliedFilters={appliedFilters} />
+          </div>
         </div>
-        <div className="flex-1">{children}</div>
       </div>
-    </>
+
+      {/* Products Area */}
+      <div className="flex-1">
+        {/* Sort Bar */}
+        <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-200">
+          <p className="text-sm text-gray-600">
+            Showing products
+          </p>
+          <SortMenu />
+        </div>
+        {children}
+      </div>
+    </div>
   );
 }
 
@@ -94,57 +126,61 @@ export function FiltersDrawer({
 
       default:
         const to = getFilterLink(option.input as string, params, location);
+        const isActive = appliedFilters.some(
+          (af) => JSON.stringify(af.filter) === option.input
+        );
         return (
           <Link
-            className="focus:underline hover:underline"
+            className={`flex items-center gap-2 text-sm py-1.5 transition-colors ${
+              isActive
+                ? 'text-brand-red font-semibold'
+                : 'text-gray-700 hover:text-brand-red'
+            }`}
             prefetch="intent"
             to={to}
           >
-            {option.label}
+            <span className={`w-4 h-4 rounded border flex items-center justify-center ${
+              isActive ? 'bg-brand-red border-brand-red' : 'border-gray-300'
+            }`}>
+              {isActive && (
+                <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                </svg>
+              )}
+            </span>
+            <span>{option.label}</span>
+            {option.count !== undefined && (
+              <span className="text-gray-400 text-xs">({option.count})</span>
+            )}
           </Link>
         );
     }
   };
 
   return (
-    <>
-      <nav className="py-8">
-        {appliedFilters.length > 0 ? (
-          <div className="pb-8">
-            <AppliedFilters filters={appliedFilters} />
-          </div>
-        ) : null}
-
-        <Heading as="h4" size="lead" className="pb-4">
-          Filter By
-        </Heading>
-        <div className="divide-y">
-          {filters.map((filter: Filter) => (
-            <Disclosure as="div" key={filter.id} className="w-full">
-              {({open}) => (
-                <>
-                  <Disclosure.Button className="flex justify-between w-full py-4">
-                    <Text size="lead">{filter.label}</Text>
-                    <IconCaret direction={open ? 'up' : 'down'} />
-                  </Disclosure.Button>
-                  <Disclosure.Panel key={filter.id}>
-                    <ul key={filter.id} className="py-2">
-                      {filter.values?.map((option) => {
-                        return (
-                          <li key={option.id} className="pb-4">
-                            {filterMarkup(filter, option)}
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </Disclosure.Panel>
-                </>
-              )}
-            </Disclosure>
-          ))}
-        </div>
-      </nav>
-    </>
+    <div className="space-y-1">
+      {filters.map((filter: Filter) => (
+        <Disclosure as="div" key={filter.id} defaultOpen={true}>
+          {({open}) => (
+            <>
+              <Disclosure.Button className="flex justify-between items-center w-full py-3 text-left">
+                <span className="font-semibold text-gray-900">{filter.label}</span>
+                <IconCaret direction={open ? 'up' : 'down'} />
+              </Disclosure.Button>
+              <Disclosure.Panel>
+                <div className="pb-4 space-y-1">
+                  {filter.values?.map((option) => (
+                    <div key={option.id}>
+                      {filterMarkup(filter, option)}
+                    </div>
+                  ))}
+                </div>
+              </Disclosure.Panel>
+            </>
+          )}
+        </Disclosure>
+      ))}
+    </div>
   );
 }
 
@@ -153,25 +189,18 @@ function AppliedFilters({filters = []}: {filters: AppliedFilter[]}) {
   const location = useLocation();
   return (
     <>
-      <Heading as="h4" size="lead" className="pb-4">
-        Applied filters
-      </Heading>
-      <div className="flex flex-wrap gap-2">
-        {filters.map((filter: AppliedFilter) => {
-          return (
-            <Link
-              to={getAppliedFilterLink(filter, params, location)}
-              className="flex px-2 border rounded-full gap"
-              key={`${filter.label}-${JSON.stringify(filter.filter)}`}
-            >
-              <span className="flex-grow">{filter.label}</span>
-              <span>
-                <IconXMark />
-              </span>
-            </Link>
-          );
-        })}
-      </div>
+      {filters.map((filter: AppliedFilter) => {
+        return (
+          <Link
+            to={getAppliedFilterLink(filter, params, location)}
+            className="inline-flex items-center gap-1 px-3 py-1 bg-brand-red/10 text-brand-red text-sm rounded-full hover:bg-brand-red/20 transition-colors"
+            key={`${filter.label}-${JSON.stringify(filter.filter)}`}
+          >
+            <span>{filter.label}</span>
+            <IconXMark className="w-3 h-3" />
+          </Link>
+        );
+      })}
     </>
   );
 }
@@ -263,29 +292,35 @@ function PriceRangeFilter({max, min}: {max?: number; min?: number}) {
   };
 
   return (
-    <div className="flex flex-col">
-      <label className="mb-4">
-        <span>from</span>
-        <input
-          name="minPrice"
-          className="text-black"
-          type="number"
-          value={minPrice ?? ''}
-          placeholder={'$'}
-          onChange={onChangeMin}
-        />
-      </label>
-      <label>
-        <span>to</span>
-        <input
-          name="maxPrice"
-          className="text-black"
-          type="number"
-          value={maxPrice ?? ''}
-          placeholder={'$'}
-          onChange={onChangeMax}
-        />
-      </label>
+    <div className="flex flex-col gap-3 py-2">
+      <div className="flex items-center gap-2">
+        <label className="text-sm text-gray-600 w-12">Min</label>
+        <div className="relative flex-1">
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">$</span>
+          <input
+            name="minPrice"
+            className="w-full pl-7 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:border-brand-red focus:ring-1 focus:ring-brand-red outline-none"
+            type="number"
+            value={minPrice ?? ''}
+            placeholder="0"
+            onChange={onChangeMin}
+          />
+        </div>
+      </div>
+      <div className="flex items-center gap-2">
+        <label className="text-sm text-gray-600 w-12">Max</label>
+        <div className="relative flex-1">
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">$</span>
+          <input
+            name="maxPrice"
+            className="w-full pl-7 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:border-brand-red focus:ring-1 focus:ring-brand-red outline-none"
+            type="number"
+            value={maxPrice ?? ''}
+            placeholder="999"
+            onChange={onChangeMax}
+          />
+        </div>
+      </div>
     </div>
   );
 }
@@ -340,24 +375,28 @@ export default function SortMenu() {
 
   return (
     <Menu as="div" className="relative z-40">
-      <Menu.Button className="flex items-center">
-        <span className="px-2">
-          <span className="px-2 font-medium">Sort by:</span>
-          <span>{(activeItem || items[0]).label}</span>
+      <Menu.Button className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:border-gray-300 transition-colors">
+        <span className="text-sm">
+          <span className="text-gray-500">Sort:</span>{' '}
+          <span className="font-medium text-gray-900">{(activeItem || items[0]).label}</span>
         </span>
         <IconCaret />
       </Menu.Button>
 
       <Menu.Items
         as="nav"
-        className="absolute right-0 flex flex-col p-4 text-right rounded-sm bg-contrast"
+        className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden"
       >
         {items.map((item) => (
           <Menu.Item key={item.label}>
-            {() => (
+            {({active}) => (
               <Link
-                className={`block text-sm pb-2 px-3 ${
-                  activeItem?.key === item.key ? 'font-bold' : 'font-normal'
+                className={`block px-4 py-2 text-sm ${
+                  activeItem?.key === item.key
+                    ? 'bg-brand-red/10 text-brand-red font-semibold'
+                    : active
+                      ? 'bg-gray-50 text-gray-900'
+                      : 'text-gray-700'
                 }`}
                 to={getSortLink(item.key, params, location)}
               >

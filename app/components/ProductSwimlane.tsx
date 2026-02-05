@@ -18,16 +18,27 @@ export function ProductSwimlane({
   ...props
 }: ProductSwimlaneProps) {
   return (
-    <Section heading={title} padding="y" {...props}>
-      <div className="swimlane hiddenScroll md:pb-8 md:scroll-px-8 lg:scroll-px-12 md:px-8 lg:px-12">
-        {products.nodes.map((product) => (
-          <ProductCard
-            product={product}
-            key={product.id}
-            className="snap-start w-80"
-          />
-        ))}
+    <section className="py-12 px-4 md:px-8 lg:px-12 bg-gray-50">
+      <div className="max-w-7xl mx-auto">
+        {/* Section Header */}
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <span className="text-brand-red font-semibold text-sm uppercase tracking-wider">Recommended</span>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mt-1">{title}</h2>
+          </div>
+        </div>
+
+        {/* Products Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+          {products.nodes.slice(0, 8).map((product) => (
+            <ProductCard
+              product={product}
+              key={product.id}
+              quickAdd
+            />
+          ))}
+        </div>
       </div>
-    </Section>
+    </section>
   );
 }

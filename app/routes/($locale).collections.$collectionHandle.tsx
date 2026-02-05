@@ -146,64 +146,79 @@ export default function Collection() {
     useLoaderData<typeof loader>();
 
   const {ref, inView} = useInView();
+  const productCount = collection.products.nodes?.length || 0;
 
   return (
     <>
-      <PageHeader heading={collection.title}>
-        {collection?.description && (
-          <div className="flex items-baseline justify-between w-full">
-            <div>
-              <Text format width="narrow" as="p" className="inline-block">
-                {collection.description}
-              </Text>
-            </div>
+      {/* Collection Header */}
+      <section className="bg-gradient-to-r from-gray-900 to-gray-800 text-white py-12 px-4 md:px-8">
+        <div className="max-w-7xl mx-auto">
+          <nav className="text-sm text-gray-400 mb-4">
+            <a href="/" className="hover:text-white">Home</a>
+            <span className="mx-2">/</span>
+            <a href="/collections" className="hover:text-white">Collections</a>
+            <span className="mx-2">/</span>
+            <span className="text-white">{collection.title}</span>
+          </nav>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">{collection.title}</h1>
+          {collection?.description && (
+            <p className="text-gray-300 text-lg max-w-2xl">{collection.description}</p>
+          )}
+          <div className="mt-4 flex items-center gap-4">
+            <span className="bg-brand-red/20 text-brand-red px-3 py-1 rounded-full text-sm font-semibold">
+              {productCount} Products
+            </span>
           </div>
-        )}
-      </PageHeader>
-      <Section>
-        <SortFilter
-          filters={collection.products.filters as Filter[]}
-          appliedFilters={appliedFilters}
-          collections={collections}
-        >
-          <Pagination connection={collection.products}>
-            {({
-              nodes,
-              isLoading,
-              PreviousLink,
-              NextLink,
-              nextPageUrl,
-              hasNextPage,
-              state,
-            }) => (
-              <>
-                <div className="flex items-center justify-center mb-6">
-                  <Button as={PreviousLink} variant="secondary" width="full">
-                    {isLoading ? 'Loading...' : 'Load previous'}
-                  </Button>
-                </div>
-                <ProductsLoadedOnScroll
-                  nodes={nodes}
-                  inView={inView}
-                  nextPageUrl={nextPageUrl}
-                  hasNextPage={hasNextPage}
-                  state={state}
-                />
-                <div className="flex items-center justify-center mt-6">
-                  <Button
-                    ref={ref}
-                    as={NextLink}
-                    variant="secondary"
-                    width="full"
-                  >
-                    {isLoading ? 'Loading...' : 'Load more products'}
-                  </Button>
-                </div>
-              </>
-            )}
-          </Pagination>
-        </SortFilter>
-      </Section>
+        </div>
+      </section>
+
+      {/* Products Section */}
+      <section className="py-8 px-4 md:px-8 bg-gray-50">
+        <div className="max-w-7xl mx-auto">
+          <SortFilter
+            filters={collection.products.filters as Filter[]}
+            appliedFilters={appliedFilters}
+            collections={collections}
+          >
+            <Pagination connection={collection.products}>
+              {({
+                nodes,
+                isLoading,
+                PreviousLink,
+                NextLink,
+                nextPageUrl,
+                hasNextPage,
+                state,
+              }) => (
+                <>
+                  <div className="flex items-center justify-center mb-6">
+                    <Button as={PreviousLink} variant="secondary" width="full">
+                      {isLoading ? 'Loading...' : 'Load previous'}
+                    </Button>
+                  </div>
+                  <ProductsLoadedOnScroll
+                    nodes={nodes}
+                    inView={inView}
+                    nextPageUrl={nextPageUrl}
+                    hasNextPage={hasNextPage}
+                    state={state}
+                  />
+                  <div className="flex items-center justify-center mt-6">
+                    <Button
+                      ref={ref}
+                      as={NextLink}
+                      variant="secondary"
+                      width="full"
+                    >
+                      {isLoading ? 'Loading...' : 'Load more products'}
+                    </Button>
+                  </div>
+                </>
+              )}
+            </Pagination>
+          </SortFilter>
+        </div>
+      </section>
       <Analytics.CollectionView
         data={{
           collection: {
@@ -242,15 +257,16 @@ function ProductsLoadedOnScroll({
   }, [inView, navigate, state, nextPageUrl, hasNextPage]);
 
   return (
-    <Grid layout="products" data-test="product-grid">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6" data-test="product-grid">
       {nodes.map((product: any, i: number) => (
         <ProductCard
           key={product.id}
           product={product}
           loading={getImageLoadingPriority(i)}
+          quickAdd
         />
       ))}
-    </Grid>
+    </div>
   );
 }
 

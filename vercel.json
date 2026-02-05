@@ -1,18 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "npm run build",
+  "buildCommand": "npm run build && cp -r dist/server dist/client/",
   "installCommand": "npm install",
   "outputDirectory": "dist/client",
   "framework": null,
-  "regions": ["sin1"],
-  "rewrites": [
-    {
-      "source": "/assets/(.*)",
-      "destination": "/assets/$1"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/api/index"
-    }
-  ]
+  "regions": ["sin1"]
 }

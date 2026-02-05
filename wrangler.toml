@@ -1,0 +1,7 @@
+name = "fitnessheals"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = "./dist/client"
+
+# Environment variables are configured as secrets in Cloudflare Pages dashboard
+# Do not add [vars] here to avoid binding conflicts

@@ -145,60 +145,161 @@ export default function Product() {
 
   return (
     <>
-      <Section className="px-0 md:px-8 lg:px-12">
-        <div className="grid items-start md:gap-6 lg:gap-20 md:grid-cols-2 lg:grid-cols-3">
-          <ProductGallery
-            media={media.nodes}
-            className="w-full lg:col-span-2"
-          />
-          <div className="sticky md:-mb-nav md:top-nav md:-translate-y-nav md:h-screen md:pt-nav hiddenScroll md:overflow-y-scroll">
-            <section className="flex flex-col w-full max-w-xl gap-8 p-6 md:mx-auto md:max-w-sm md:px-0">
-              <div className="grid gap-2">
-                <Heading as="h1" className="whitespace-normal">
-                  {title}
-                </Heading>
-                {vendor && (
-                  <Text className={'opacity-50 font-medium'}>{vendor}</Text>
-                )}
+      <section className="py-8 px-4 md:px-8 lg:px-12 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-8 lg:gap-16">
+            {/* Product Image - Smaller */}
+            <div className="relative">
+              <div className="sticky top-24">
+                <ProductGallery
+                  media={media.nodes}
+                  className="w-full max-w-md mx-auto"
+                />
               </div>
+            </div>
+
+            {/* Product Info - More Content */}
+            <div className="flex flex-col gap-6">
+              {/* Breadcrumb */}
+              <nav className="text-sm text-gray-500">
+                <Link to="/" className="hover:text-brand-red">Home</Link>
+                <span className="mx-2">/</span>
+                <Link to="/shop" className="hover:text-brand-red">Shop</Link>
+                <span className="mx-2">/</span>
+                <span className="text-gray-900">{title}</span>
+              </nav>
+
+              {/* Title & Vendor */}
+              <div>
+                {vendor && (
+                  <p className="text-brand-red font-semibold text-sm uppercase tracking-wide mb-2">{vendor}</p>
+                )}
+                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
+                  {title}
+                </h1>
+              </div>
+
+              {/* Price */}
+              {selectedVariant && (
+                <div className="flex items-center gap-3">
+                  <span className="text-3xl font-bold text-gray-900">
+                    <Money withoutTrailingZeros data={selectedVariant.price!} />
+                  </span>
+                  {selectedVariant.compareAtPrice &&
+                   selectedVariant.price?.amount < selectedVariant.compareAtPrice?.amount && (
+                    <>
+                      <span className="text-xl text-gray-400 line-through">
+                        <Money withoutTrailingZeros data={selectedVariant.compareAtPrice} />
+                      </span>
+                      <span className="bg-brand-red text-white text-sm font-bold px-2 py-1 rounded">
+                        SALE
+                      </span>
+                    </>
+                  )}
+                </div>
+              )}
+
+              {/* Trust Badges */}
+              <div className="flex flex-wrap gap-4 py-4 border-y border-gray-200">
+                <div className="flex items-center gap-2 text-sm text-gray-600">
+                  <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>Free Shipping over $75</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-gray-600">
+                  <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  </svg>
+                  <span>Easy Returns</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-gray-600">
+                  <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                  <span>Secure Checkout</span>
+                </div>
+              </div>
+
+              {/* Product Form (Options & Add to Cart) */}
               <ProductForm
                 productOptions={productOptions}
                 selectedVariant={selectedVariant}
                 storeDomain={storeDomain}
               />
-              <div className="grid gap-4 py-4">
-                {descriptionHtml && (
-                  <ProductDetail
-                    title="Product Details"
-                    content={descriptionHtml}
+
+              {/* Description - Expanded by Default */}
+              {descriptionHtml && (
+                <div className="py-4">
+                  <h3 className="text-lg font-bold text-gray-900 mb-3">Product Description</h3>
+                  <div
+                    className="prose prose-sm max-w-none text-gray-600"
+                    dangerouslySetInnerHTML={{__html: descriptionHtml}}
                   />
-                )}
+                </div>
+              )}
+
+              {/* Features List */}
+              <div className="bg-gray-50 rounded-xl p-6">
+                <h3 className="text-lg font-bold text-gray-900 mb-4">Why Choose This Product?</h3>
+                <ul className="space-y-3">
+                  <li className="flex items-start gap-3">
+                    <svg className="w-5 h-5 text-brand-red flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-gray-700">Premium quality materials</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <svg className="w-5 h-5 text-brand-red flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-gray-700">Designed for performance athletes</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <svg className="w-5 h-5 text-brand-red flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-gray-700">Durable and long-lasting</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <svg className="w-5 h-5 text-brand-red flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-gray-700">Trusted by professional athletes</span>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Shipping & Returns Accordions */}
+              <div className="grid gap-4 border-t border-gray-200 pt-6">
                 {shippingPolicy?.body && (
                   <ProductDetail
-                    title="Shipping"
+                    title="Shipping Information"
                     content={getExcerpt(shippingPolicy.body)}
                     learnMore={`/policies/${shippingPolicy.handle}`}
                   />
                 )}
                 {refundPolicy?.body && (
                   <ProductDetail
-                    title="Returns"
+                    title="Returns & Exchanges"
                     content={getExcerpt(refundPolicy.body)}
                     learnMore={`/policies/${refundPolicy.handle}`}
                   />
                 )}
               </div>
-            </section>
+            </div>
           </div>
         </div>
-      </Section>
+      </section>
+
+      {/* Related Products */}
       <Suspense fallback={<Skeleton className="h-32" />}>
         <Await
           errorElement="There was a problem loading related products"
           resolve={recommended}
         >
           {(products) => (
-            <ProductSwimlane title="Related Products" products={products} />
+            <ProductSwimlane title="You May Also Like" products={products} />
           )}
         </Await>
       </Suspense>

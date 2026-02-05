@@ -5,8 +5,6 @@ import clsx from 'clsx';
 import type {CartBuyerIdentityInput} from '@shopify/hydrogen/storefront-api-types';
 import {CartForm} from '@shopify/hydrogen';
 
-import {Button} from '~/components/Button';
-import {Heading} from '~/components/Text';
 import {IconCheck} from '~/components/Icon';
 import type {Localizations, Locale} from '~/lib/type';
 import {DEFAULT_LOCALE} from '~/lib/utils';
@@ -50,50 +48,51 @@ export function CountrySelector() {
   }, []);
 
   return (
-    <section
+    <div
       ref={observerRef}
-      className="grid w-full gap-4"
+      className="relative"
       onMouseLeave={closeDropdown}
     >
-      <Heading size="lead" className="cursor-default" as="h3">
-        Country
-      </Heading>
-      <div className="relative">
-        <details
-          className="absolute w-full border rounded border-contrast/30 dark:border-white open:round-b-none overflow-clip"
-          ref={closeRef}
-        >
-          <summary className="flex items-center justify-between w-full px-4 py-3 cursor-pointer">
-            {selectedLocale.label}
-          </summary>
-          <div className="w-full overflow-auto border-t border-contrast/30 dark:border-white bg-contrast/30 max-h-36">
-            {countries &&
-              Object.keys(countries).map((countryPath) => {
-                const countryLocale = countries[countryPath];
-                const isSelected =
-                  countryLocale.language === selectedLocale.language &&
-                  countryLocale.country === selectedLocale.country;
+      <details
+        className="group"
+        ref={closeRef}
+      >
+        <summary className="flex items-center gap-2 px-3 py-2 text-sm bg-white/10 hover:bg-white/20 rounded-lg cursor-pointer transition-colors border border-white/20 list-none">
+          <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span className="text-gray-300 whitespace-nowrap">{selectedLocale.label}</span>
+          <svg className="w-3 h-3 text-gray-400 group-open:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </summary>
+        <div className="absolute right-0 bottom-full mb-2 w-56 max-h-64 overflow-auto bg-gray-900 border border-gray-600 rounded-lg shadow-xl z-50">
+          {countries &&
+            Object.keys(countries).map((countryPath) => {
+              const countryLocale = countries[countryPath];
+              const isSelected =
+                countryLocale.language === selectedLocale.language &&
+                countryLocale.country === selectedLocale.country;
 
-                const countryUrlPath = getCountryUrlPath({
-                  countryLocale,
-                  defaultLocalePrefix,
-                  pathWithoutLocale,
-                });
+              const countryUrlPath = getCountryUrlPath({
+                countryLocale,
+                defaultLocalePrefix,
+                pathWithoutLocale,
+              });
 
-                return (
-                  <Country
-                    key={countryPath}
-                    closeDropdown={closeDropdown}
-                    countryUrlPath={countryUrlPath}
-                    isSelected={isSelected}
-                    countryLocale={countryLocale}
-                  />
-                );
-              })}
-          </div>
-        </details>
-      </div>
-    </section>
+              return (
+                <Country
+                  key={countryPath}
+                  closeDropdown={closeDropdown}
+                  countryUrlPath={countryUrlPath}
+                  isSelected={isSelected}
+                  countryLocale={countryLocale}
+                />
+              );
+            })}
+        </div>
+      </details>
+    </div>
   );
 }
 
@@ -116,23 +115,21 @@ function Country({
         countryCode: countryLocale.country,
       }}
     >
-      <Button
-        className={clsx([
-          'text-contrast dark:text-primary',
-          'bg-primary dark:bg-contrast w-full p-2 transition rounded flex justify-start',
-          'items-center text-left cursor-pointer py-2 px-4',
-        ])}
+      <button
         type="submit"
-        variant="primary"
         onClick={closeDropdown}
+        className={clsx(
+          'w-full px-4 py-2 text-left text-sm flex items-center justify-between transition-colors',
+          isSelected
+            ? 'bg-brand-red/20 text-white'
+            : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+        )}
       >
-        {countryLocale.label}
-        {isSelected ? (
-          <span className="ml-2">
-            <IconCheck />
-          </span>
-        ) : null}
-      </Button>
+        <span>{countryLocale.label}</span>
+        {isSelected && (
+          <IconCheck className="w-4 h-4 text-brand-red" />
+        )}
+      </button>
     </ChangeLocaleForm>
   );
 }

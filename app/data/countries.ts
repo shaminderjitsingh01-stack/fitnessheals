@@ -2,6 +2,12 @@ import type {Localizations} from '~/lib/type';
 
 export const countries: Localizations = {
   default: {
+    label: 'Singapore (SGD $)',
+    language: 'EN',
+    country: 'SG',
+    currency: 'SGD',
+  },
+  '/en-us': {
     label: 'United States (USD $)',
     language: 'EN',
     country: 'US',
@@ -180,12 +186,6 @@ export const countries: Localizations = {
     language: 'EN',
     country: 'PT',
     currency: 'EUR',
-  },
-  '/en-sg': {
-    label: 'Singapore (SGD $)',
-    language: 'EN',
-    country: 'SG',
-    currency: 'SGD',
   },
   '/en-si': {
     label: 'Slovenia (EUR €)',
