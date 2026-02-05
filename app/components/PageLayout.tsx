@@ -139,6 +139,16 @@ export function MenuDrawer({
   );
 }
 
+// FitnessHeals custom navigation
+const FITNESS_NAV = [
+  {title: 'Shop', to: '/shop'},
+  {title: 'Sports', to: '/sports'},
+  {title: 'Articles', to: '/articles'},
+  {title: 'Videos', to: '/videos'},
+  {title: 'About', to: '/about'},
+  {title: 'Contact', to: '/contact'},
+];
+
 function MenuMobileNav({
   menu,
   onClose,
@@ -148,12 +158,11 @@ function MenuMobileNav({
 }) {
   return (
     <nav className="grid gap-4 p-6 sm:gap-6 sm:px-12 sm:py-8">
-      {/* Top level menu items */}
-      {(menu?.items || []).map((item) => (
-        <span key={item.id} className="block">
+      {/* FitnessHeals nav items */}
+      {FITNESS_NAV.map((item) => (
+        <span key={item.to} className="block">
           <Link
             to={item.to}
-            target={item.target}
             onClick={onClose}
             className={({isActive}) =>
               isActive ? 'pb-1 border-b -mb-px' : 'pb-1'
@@ -233,7 +242,7 @@ function MobileHeader({
           className="font-bold text-center leading-none"
           as={isHome ? 'h1' : 'h2'}
         >
-          {title}
+          FitnessHeals
         </Heading>
       </Link>
 
@@ -270,16 +279,15 @@ function DesktopHeader({
       } hidden h-nav lg:flex items-center sticky transition duration-300 backdrop-blur-lg z-40 top-0 justify-between w-full leading-none gap-8 px-12 py-8`}
     >
       <div className="flex gap-12">
-        <Link className="font-bold" to="/" prefetch="intent">
-          {title}
+        <Link className="font-bold text-xl" to="/" prefetch="intent">
+          FitnessHeals
         </Link>
         <nav className="flex gap-8">
-          {/* Top level menu items */}
-          {(menu?.items || []).map((item) => (
+          {/* FitnessHeals nav items */}
+          {FITNESS_NAV.map((item) => (
             <Link
-              key={item.id}
+              key={item.to}
               to={item.to}
-              target={item.target}
               prefetch="intent"
               className={({isActive}) =>
                 isActive ? 'pb-1 border-b -mb-px' : 'pb-1'
@@ -428,8 +436,7 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
       <div
         className={`self-end pt-8 opacity-50 md:col-span-2 lg:col-span-${itemsCount}`}
       >
-        &copy; {new Date().getFullYear()} / Shopify, Inc. Hydrogen is an MIT
-        Licensed Open Source project.
+        &copy; {new Date().getFullYear()} FitnessHeals. All rights reserved.
       </div>
     </Section>
   );

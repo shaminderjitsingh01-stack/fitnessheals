@@ -11,6 +11,14 @@ export default {
         contrast: 'rgb(var(--color-contrast) / <alpha-value>)',
         notice: 'rgb(var(--color-accent) / <alpha-value>)',
         shopPay: 'rgb(var(--color-shop-pay) / <alpha-value>)',
+        // FitnessHeals brand colors
+        brand: {
+          red: '#E53935',
+          orange: '#FF6B35',
+          dark: '#1A1A2E',
+          gray: '#4A4A68',
+          light: '#F5F5F7',
+        },
       },
       screens: {
         sm: '32em',
