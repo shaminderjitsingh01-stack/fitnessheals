@@ -24,7 +24,7 @@ export default function SportsIndex() {
           {SPORTS.map((sport) => (
             <Link
               key={sport.slug}
-              to={`/sports/${sport.slug}`}
+              to={`/collections/${sport.slug}`}
               className="group relative flex flex-col items-center justify-center p-12 rounded-2xl bg-contrast border border-primary/10 hover:border-brand-red hover:shadow-xl transition-all duration-300 overflow-hidden"
               style={{
                 background: `linear-gradient(135deg, ${sport.color}10 0%, transparent 100%)`,

@@ -92,7 +92,7 @@ export default function AboutPage() {
             {SPORTS.map((sport) => (
               <Link
                 key={sport.slug}
-                to={`/sports/${sport.slug}`}
+                to={`/collections/${sport.slug}`}
                 className="flex items-center gap-3 px-5 py-3 bg-gray-800 rounded-xl border border-gray-700 hover:border-brand-red hover:shadow-lg transition-all group"
               >
                 <span className="text-2xl">{sport.icon}</span>

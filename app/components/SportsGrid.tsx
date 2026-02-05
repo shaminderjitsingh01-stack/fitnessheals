@@ -29,7 +29,7 @@ export function SportsGrid() {
           {SPORTS.map((sport) => (
             <Link
               key={sport.slug}
-              to={`/sports/${sport.slug}`}
+              to={`/collections/${sport.slug}`}
               className="group relative flex flex-col items-center justify-center p-6 rounded-2xl overflow-hidden transition-all duration-300 hover:scale-105"
               style={{backgroundColor: `${sport.color}15`}}
             >
