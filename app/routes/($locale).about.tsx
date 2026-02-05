@@ -27,13 +27,13 @@ export default function AboutPage() {
       </section>
 
       {/* Our Story */}
-      <section className="py-20 px-6 md:px-12">
+      <section className="py-20 px-6 md:px-12 bg-gray-900">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <span className="text-brand-red font-semibold text-sm uppercase tracking-wider">Our Story</span>
-            <h2 className="text-3xl md:text-4xl font-black text-gray-900 mt-2">How It All Began</h2>
+            <h2 className="text-3xl md:text-4xl font-black text-white mt-2">How It All Began</h2>
           </div>
-          <div className="prose prose-lg max-w-none text-gray-500 space-y-6">
+          <div className="prose prose-lg max-w-none text-gray-300 space-y-6">
             <p>
               FitnessHeals was born from a simple observation: athletes deserve better. Too often, finding quality sports gear meant compromising - either settling for subpar equipment or paying premium prices at specialty stores with limited selection.
             </p>
@@ -79,12 +79,12 @@ export default function AboutPage() {
       </section>
 
       {/* Sports We Cover */}
-      <section className="py-20 px-6 md:px-12">
+      <section className="py-20 px-6 md:px-12 bg-gray-900">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <span className="text-brand-red font-semibold text-sm uppercase tracking-wider">Our Expertise</span>
-            <h2 className="text-3xl md:text-4xl font-black text-gray-900 mt-2">11 Sports, One Destination</h2>
-            <p className="text-gray-500 mt-4 max-w-2xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-black text-white mt-2">11 Sports, One Destination</h2>
+            <p className="text-gray-300 mt-4 max-w-2xl mx-auto">
               From bat-and-ball sports to combat arts, from individual pursuits to team games - we've got you covered.
             </p>
           </div>
@@ -93,10 +93,10 @@ export default function AboutPage() {
               <Link
                 key={sport.slug}
                 to={`/sports/${sport.slug}`}
-                className="flex items-center gap-3 px-5 py-3 bg-white rounded-xl border border-gray-200 hover:border-brand-red hover:shadow-lg transition-all group"
+                className="flex items-center gap-3 px-5 py-3 bg-gray-800 rounded-xl border border-gray-700 hover:border-brand-red hover:shadow-lg transition-all group"
               >
                 <span className="text-2xl">{sport.icon}</span>
-                <span className="font-semibold text-gray-800 group-hover:text-brand-red transition-colors">{sport.name}</span>
+                <span className="font-semibold text-white group-hover:text-brand-red transition-colors">{sport.name}</span>
               </Link>
             ))}
           </div>
@@ -152,11 +152,11 @@ export default function AboutPage() {
       </section>
 
       {/* Why Choose Us */}
-      <section className="py-20 px-6 md:px-12">
+      <section className="py-20 px-6 md:px-12 bg-gray-900">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <span className="text-brand-red font-semibold text-sm uppercase tracking-wider">The FitnessHeals Advantage</span>
-            <h2 className="text-3xl md:text-4xl font-black text-gray-900 mt-2">Why Athletes Choose Us</h2>
+            <h2 className="text-3xl md:text-4xl font-black text-white mt-2">Why Athletes Choose Us</h2>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="flex gap-4">
@@ -166,8 +166,8 @@ export default function AboutPage() {
                 </svg>
               </div>
               <div>
-                <h3 className="font-bold text-lg mb-2">Curated Selection</h3>
-                <p className="text-gray-600 text-sm">We don't stock everything - just the best. Our team tests and evaluates products before they make it to our shelves.</p>
+                <h3 className="font-bold text-lg mb-2 text-white">Curated Selection</h3>
+                <p className="text-gray-400 text-sm">We don't stock everything - just the best. Our team tests and evaluates products before they make it to our shelves.</p>
               </div>
             </div>
             <div className="flex gap-4">
@@ -177,8 +177,8 @@ export default function AboutPage() {
                 </svg>
               </div>
               <div>
-                <h3 className="font-bold text-lg mb-2">Fair Pricing</h3>
-                <p className="text-gray-600 text-sm">Quality gear doesn't have to break the bank. We work directly with brands to offer competitive prices without compromising quality.</p>
+                <h3 className="font-bold text-lg mb-2 text-white">Fair Pricing</h3>
+                <p className="text-gray-400 text-sm">Quality gear doesn't have to break the bank. We work directly with brands to offer competitive prices without compromising quality.</p>
               </div>
             </div>
             <div className="flex gap-4">
@@ -188,8 +188,8 @@ export default function AboutPage() {
                 </svg>
               </div>
               <div>
-                <h3 className="font-bold text-lg mb-2">Expert Guidance</h3>
-                <p className="text-gray-600 text-sm">Not sure what you need? Our team of sports enthusiasts is here to help you find the perfect gear for your level and goals.</p>
+                <h3 className="font-bold text-lg mb-2 text-white">Expert Guidance</h3>
+                <p className="text-gray-400 text-sm">Not sure what you need? Our team of sports enthusiasts is here to help you find the perfect gear for your level and goals.</p>
               </div>
             </div>
             <div className="flex gap-4">
@@ -200,8 +200,8 @@ export default function AboutPage() {
                 </svg>
               </div>
               <div>
-                <h3 className="font-bold text-lg mb-2">Fast Shipping</h3>
-                <p className="text-gray-600 text-sm">Free shipping on orders over $75. Most orders ship within 24 hours so you can get back to training faster.</p>
+                <h3 className="font-bold text-lg mb-2 text-white">Fast Shipping</h3>
+                <p className="text-gray-400 text-sm">Free shipping on orders over $75. Most orders ship within 24 hours so you can get back to training faster.</p>
               </div>
             </div>
             <div className="flex gap-4">
@@ -211,8 +211,8 @@ export default function AboutPage() {
                 </svg>
               </div>
               <div>
-                <h3 className="font-bold text-lg mb-2">Easy Returns</h3>
-                <p className="text-gray-600 text-sm">Not satisfied? Return within 30 days for a full refund. No questions asked, no restocking fees.</p>
+                <h3 className="font-bold text-lg mb-2 text-white">Easy Returns</h3>
+                <p className="text-gray-400 text-sm">Not satisfied? Return within 30 days for a full refund. No questions asked, no restocking fees.</p>
               </div>
             </div>
             <div className="flex gap-4">
@@ -222,8 +222,8 @@ export default function AboutPage() {
                 </svg>
               </div>
               <div>
-                <h3 className="font-bold text-lg mb-2">Secure Shopping</h3>
-                <p className="text-gray-600 text-sm">Shop with confidence. Your payment information is protected with industry-leading encryption and security protocols.</p>
+                <h3 className="font-bold text-lg mb-2 text-white">Secure Shopping</h3>
+                <p className="text-gray-400 text-sm">Shop with confidence. Your payment information is protected with industry-leading encryption and security protocols.</p>
               </div>
             </div>
           </div>
