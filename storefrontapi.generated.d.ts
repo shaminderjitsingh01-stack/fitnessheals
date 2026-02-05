@@ -245,6 +245,14 @@ export type FeaturedProductsQuery = {
   };
 };
 
+export type ProductsCountQueryVariables = StorefrontAPI.Exact<{
+  [key: string]: never;
+}>;
+
+export type ProductsCountQuery = {
+  products: {nodes: Array<Pick<StorefrontAPI.Product, 'id'>>};
+};
+
 export type ApiAllProductsQueryVariables = StorefrontAPI.Exact<{
   query?: StorefrontAPI.InputMaybe<StorefrontAPI.Scalars['String']['input']>;
   count?: StorefrontAPI.InputMaybe<StorefrontAPI.Scalars['Int']['input']>;
@@ -278,6 +286,30 @@ export type ApiAllProductsQuery = {
                 Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
               >;
               product: Pick<StorefrontAPI.Product, 'handle' | 'title'>;
+            }
+          >;
+        };
+      }
+    >;
+  };
+};
+
+export type BlogsQueryVariables = StorefrontAPI.Exact<{[key: string]: never}>;
+
+export type BlogsQuery = {
+  blogs: {
+    nodes: Array<
+      Pick<StorefrontAPI.Blog, 'handle' | 'title'> & {
+        articles: {
+          nodes: Array<
+            Pick<
+              StorefrontAPI.Article,
+              'id' | 'handle' | 'title' | 'excerpt' | 'publishedAt'
+            > & {
+              image?: StorefrontAPI.Maybe<
+                Pick<StorefrontAPI.Image, 'url' | 'altText'>
+              >;
+              author: Pick<StorefrontAPI.ArticleAuthor, 'name'>;
             }
           >;
         };
@@ -1283,9 +1315,17 @@ interface GeneratedQueryTypes {
     return: FeaturedProductsQuery;
     variables: FeaturedProductsQueryVariables;
   };
+  '#graphql\n  query productsCount {\n    products(first: 250) {\n      nodes {\n        id\n      }\n    }\n  }\n': {
+    return: ProductsCountQuery;
+    variables: ProductsCountQueryVariables;
+  };
   '#graphql\n  query ApiAllProducts(\n    $query: String\n    $count: Int\n    $reverse: Boolean\n    $country: CountryCode\n    $language: LanguageCode\n    $sortKey: ProductSortKeys\n  ) @inContext(country: $country, language: $language) {\n    products(first: $count, sortKey: $sortKey, reverse: $reverse, query: $query) {\n      nodes {\n        ...ProductCard\n      }\n    }\n  }\n  #graphql\n  fragment ProductCard on Product {\n    id\n    title\n    publishedAt\n    handle\n    vendor\n    variants(first: 1) {\n      nodes {\n        id\n        availableForSale\n        image {\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        selectedOptions {\n          name\n          value\n        }\n        product {\n          handle\n          title\n        }\n      }\n    }\n  }\n\n': {
     return: ApiAllProductsQuery;
     variables: ApiAllProductsQueryVariables;
+  };
+  '#graphql\n  query Blogs {\n    blogs(first: 20) {\n      nodes {\n        handle\n        title\n        articles(first: 50, sortKey: PUBLISHED_AT, reverse: true) {\n          nodes {\n            id\n            handle\n            title\n            excerpt\n            publishedAt\n            image {\n              url\n              altText\n            }\n            author {\n              name\n            }\n          }\n        }\n      }\n    }\n  }\n': {
+    return: BlogsQuery;
+    variables: BlogsQueryVariables;
   };
   '#graphql\n  query CollectionDetails(\n    $handle: String!\n    $country: CountryCode\n    $language: LanguageCode\n    $filters: [ProductFilter!]\n    $sortKey: ProductCollectionSortKeys!\n    $reverse: Boolean\n    $first: Int\n    $last: Int\n    $startCursor: String\n    $endCursor: String\n  ) @inContext(country: $country, language: $language) {\n    collection(handle: $handle) {\n      id\n      handle\n      title\n      description\n      seo {\n        description\n        title\n      }\n      image {\n        id\n        url\n        width\n        height\n        altText\n      }\n      products(\n        first: $first,\n        last: $last,\n        before: $startCursor,\n        after: $endCursor,\n        filters: $filters,\n        sortKey: $sortKey,\n        reverse: $reverse\n      ) {\n        filters {\n          id\n          label\n          type\n          values {\n            id\n            label\n            count\n            input\n          }\n        }\n        nodes {\n          ...ProductCard\n        }\n        pageInfo {\n          hasPreviousPage\n          hasNextPage\n          endCursor\n          startCursor\n        }\n      }\n    }\n    collections(first: 100) {\n      edges {\n        node {\n          title\n          handle\n        }\n      }\n    }\n  }\n  #graphql\n  fragment ProductCard on Product {\n    id\n    title\n    publishedAt\n    handle\n    vendor\n    variants(first: 1) {\n      nodes {\n        id\n        availableForSale\n        image {\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        selectedOptions {\n          name\n          value\n        }\n        product {\n          handle\n          title\n        }\n      }\n    }\n  }\n\n': {
     return: CollectionDetailsQuery;
