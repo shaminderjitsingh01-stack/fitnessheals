@@ -741,7 +741,7 @@ function ArticleCard({article}: {article: typeof ALL_ARTICLES[0]}) {
 
   return (
     <Link
-      to={`/sports/${article.sportSlug}#articles`}
+      to={`/articles/${article.id}`}
       className="group bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col"
     >
       {/* Card Image */}

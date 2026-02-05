@@ -17,7 +17,7 @@ export default async function handleRequest(
       storeDomain: context.env.PUBLIC_STORE_DOMAIN,
     },
     scriptSrc: [
-      'self',
+      "'self'",
       'https://cdn.shopify.com',
       'https://shopify.com',
       'https://www.google-analytics.com',
@@ -25,14 +25,14 @@ export default async function handleRequest(
       ...(process.env.NODE_ENV !== 'production' ? ['http://localhost:*'] : []),
     ],
     imgSrc: [
-      'self',
+      "'self'",
       'https://cdn.shopify.com',
       'https://shopify.com',
       'https://images.unsplash.com',
       'data:',
     ],
     frameSrc: [
-      'self',
+      "'self'",
       'https://www.youtube.com',
       'https://youtube.com',
     ],

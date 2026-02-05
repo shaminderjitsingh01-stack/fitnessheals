@@ -33,7 +33,7 @@ export default function AboutPage() {
             <span className="text-brand-red font-semibold text-sm uppercase tracking-wider">Our Story</span>
             <h2 className="text-3xl md:text-4xl font-black text-gray-900 mt-2">How It All Began</h2>
           </div>
-          <div className="prose prose-lg max-w-none text-gray-600 space-y-6">
+          <div className="prose prose-lg max-w-none text-gray-500 space-y-6">
             <p>
               FitnessHeals was born from a simple observation: athletes deserve better. Too often, finding quality sports gear meant compromising - either settling for subpar equipment or paying premium prices at specialty stores with limited selection.
             </p>
@@ -57,7 +57,7 @@ export default function AboutPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold mb-4">Our Mission</h3>
+              <h3 className="text-2xl font-bold mb-4 text-gray-900">Our Mission</h3>
               <p className="text-gray-600 leading-relaxed">
                 To democratize access to premium sports equipment by offering curated, high-quality gear at fair prices. We believe every athlete - regardless of skill level or budget - deserves equipment that enhances their performance and keeps them safe during training and competition.
               </p>
@@ -69,7 +69,7 @@ export default function AboutPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold mb-4">Our Vision</h3>
+              <h3 className="text-2xl font-bold mb-4 text-gray-900">Our Vision</h3>
               <p className="text-gray-600 leading-relaxed">
                 To become Southeast Asia's most trusted multi-sport equipment destination, known for our uncompromising quality standards, expert guidance, and genuine passion for helping athletes succeed. We envision a future where FitnessHeals is synonymous with athletic excellence.
               </p>
@@ -84,7 +84,7 @@ export default function AboutPage() {
           <div className="text-center mb-12">
             <span className="text-brand-red font-semibold text-sm uppercase tracking-wider">Our Expertise</span>
             <h2 className="text-3xl md:text-4xl font-black text-gray-900 mt-2">11 Sports, One Destination</h2>
-            <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
+            <p className="text-gray-500 mt-4 max-w-2xl mx-auto">
               From bat-and-ball sports to combat arts, from individual pursuits to team games - we've got you covered.
             </p>
           </div>
@@ -115,7 +115,7 @@ export default function AboutPage() {
               <div className="w-16 h-16 bg-brand-red/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-3xl">🏆</span>
               </div>
-              <h3 className="text-xl font-bold mb-3">Quality First</h3>
+              <h3 className="text-xl font-bold mb-3 text-gray-900">Quality First</h3>
               <p className="text-gray-600 text-sm">
                 Every product we stock undergoes rigorous vetting. We partner only with brands that share our commitment to excellence and durability.
               </p>
@@ -124,7 +124,7 @@ export default function AboutPage() {
               <div className="w-16 h-16 bg-brand-red/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-3xl">💪</span>
               </div>
-              <h3 className="text-xl font-bold mb-3">Athlete Focused</h3>
+              <h3 className="text-xl font-bold mb-3 text-gray-900">Athlete Focused</h3>
               <p className="text-gray-600 text-sm">
                 We're athletes ourselves. Every decision we make - from product selection to customer service - is informed by real sporting experience.
               </p>
@@ -133,7 +133,7 @@ export default function AboutPage() {
               <div className="w-16 h-16 bg-brand-red/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-3xl">🤝</span>
               </div>
-              <h3 className="text-xl font-bold mb-3">Trust & Transparency</h3>
+              <h3 className="text-xl font-bold mb-3 text-gray-900">Trust & Transparency</h3>
               <p className="text-gray-600 text-sm">
                 Honest pricing, clear product information, and straightforward policies. No hidden fees, no misleading claims - just straightforward service.
               </p>
@@ -142,7 +142,7 @@ export default function AboutPage() {
               <div className="w-16 h-16 bg-brand-red/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-3xl">🌍</span>
               </div>
-              <h3 className="text-xl font-bold mb-3">Community</h3>
+              <h3 className="text-xl font-bold mb-3 text-gray-900">Community</h3>
               <p className="text-gray-600 text-sm">
                 Beyond selling gear, we're building a community of sports enthusiasts who inspire and support each other on their fitness journeys.
               </p>
