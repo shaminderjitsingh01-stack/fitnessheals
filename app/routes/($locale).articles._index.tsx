@@ -650,10 +650,12 @@ export default function ArticlesIndex() {
 
       {/* Articles List */}
       <section className="py-12 px-6 md:px-12">
-        <div className="max-w-4xl mx-auto space-y-8">
-          {filteredArticles.map((article) => (
-            <ArticleCard key={article.id} article={article} />
-          ))}
+        <div className="max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredArticles.map((article) => (
+              <ArticleCard key={article.id} article={article} />
+            ))}
+          </div>
         </div>
       </section>
 
@@ -681,81 +683,65 @@ export default function ArticlesIndex() {
   );
 }
 
-// Full Article Card Component
+// Blog Card Component - Card format for 3-column grid
 function ArticleCard({article}: {article: typeof ALL_ARTICLES[0]}) {
   return (
-    <article className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow">
-      {/* Article Header */}
-      <div className="bg-gradient-to-r from-gray-900 to-gray-800 px-6 md:px-8 py-6">
-        <div className="flex items-center gap-3 text-sm text-gray-400 mb-3 flex-wrap">
-          <span className="bg-brand-red/20 text-brand-red px-3 py-1 rounded-full font-semibold">
+    <Link
+      to={`/sports/${article.sportSlug}#articles`}
+      className="group bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col"
+    >
+      {/* Card Header */}
+      <div className="bg-gradient-to-r from-gray-900 to-gray-800 px-5 py-4 relative overflow-hidden">
+        <div className="absolute top-0 right-0 text-5xl opacity-10 transform translate-x-2 -translate-y-2">
+          {article.sportIcon}
+        </div>
+        <div className="flex items-center gap-2 text-xs text-gray-400 mb-2">
+          <span className="bg-brand-red/20 text-brand-red px-2 py-0.5 rounded-full font-semibold">
             {article.sportIcon} {article.sport}
           </span>
           <span className="flex items-center gap-1">
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             {article.readTime}
           </span>
         </div>
-        <h2 className="text-xl md:text-2xl font-bold text-white">{article.title}</h2>
-        <p className="text-gray-400 mt-2">{article.excerpt}</p>
+        <h3 className="text-base font-bold text-white group-hover:text-brand-red transition-colors line-clamp-2">
+          {article.title}
+        </h3>
       </div>
 
-      {/* Article Content */}
-      <div className="px-6 md:px-8 py-6">
-        <div className="space-y-6">
-          {article.sections.map((section, idx) => (
-            <div key={idx}>
-              <h3 className="text-lg font-bold text-gray-900 mb-2 flex items-center gap-3">
-                <span className="w-7 h-7 bg-gradient-to-r from-brand-red to-brand-orange text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">
-                  {idx + 1}
-                </span>
-                {section.heading}
-              </h3>
-              <p className="text-gray-600 leading-relaxed pl-10">
-                {section.content}
-              </p>
-            </div>
+      {/* Card Body */}
+      <div className="px-5 py-4 flex-1 flex flex-col">
+        <p className="text-gray-600 text-sm leading-relaxed line-clamp-3 mb-4">
+          {article.excerpt}
+        </p>
+
+        {/* Topics Preview */}
+        <div className="flex flex-wrap gap-1 mb-4">
+          {article.sections.slice(0, 2).map((section, idx) => (
+            <span key={idx} className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded">
+              {section.heading}
+            </span>
           ))}
+          {article.sections.length > 2 && (
+            <span className="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded">
+              +{article.sections.length - 2} more
+            </span>
+          )}
         </div>
 
-        {/* Pro Tips */}
-        <div className="mt-8 bg-gradient-to-r from-brand-red/5 to-brand-orange/5 rounded-xl p-5 border border-brand-red/10">
-          <h4 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
-            <svg className="w-5 h-5 text-brand-red" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-            Pro Tips
-          </h4>
-          <ul className="space-y-2">
-            {article.tips.map((tip, idx) => (
-              <li key={idx} className="flex items-start gap-2 text-gray-700 text-sm">
-                <svg className="w-4 h-4 text-brand-red mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                </svg>
-                <span>{tip}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* CTA */}
-        <div className="mt-6 flex flex-col sm:flex-row gap-3 items-center justify-between p-5 bg-gray-50 rounded-xl">
-          <div>
-            <p className="font-semibold text-gray-900">{article.cta.description}</p>
-          </div>
-          <Link
-            to={`/collections/${article.sportSlug}`}
-            className="inline-flex items-center gap-2 px-6 py-3 bg-brand-red text-white font-semibold rounded-lg hover:bg-brand-orange transition-colors whitespace-nowrap"
-          >
-            {article.cta.text}
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        {/* Footer */}
+        <div className="mt-auto pt-3 border-t border-gray-100 flex items-center justify-between">
+          <span className="text-brand-red font-semibold text-sm group-hover:text-brand-orange transition-colors flex items-center gap-1">
+            Read Article
+            <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
-          </Link>
+          </span>
+          <span className="text-xs text-gray-400">{article.tips.length} Tips</span>
         </div>
       </div>
-    </article>
+    </Link>
   );
 }

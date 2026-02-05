@@ -563,80 +563,61 @@ export async function loader({params, context}: LoaderFunctionArgs) {
   return defer({sport, products});
 }
 
-// Blog Article Component - Full display format
-function BlogArticle({article, sportSlug, sportName}: {article: {title: string; sections: Array<{heading: string; content: string}>; tips: string[]; readTime: string; cta: {text: string; description: string}}, sportSlug: string, sportName: string}) {
+// Blog Card Component - Card display format linking to articles
+function BlogCard({article, sportSlug, sportName, sportIcon}: {article: {title: string; sections: Array<{heading: string; content: string}>; tips: string[]; readTime: string; cta: {text: string; description: string}}, sportSlug: string, sportName: string, sportIcon: string}) {
   return (
-    <article className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
-      {/* Article Header */}
-      <div className="bg-gradient-to-r from-gray-900 to-gray-800 px-8 py-6">
-        <div className="flex items-center gap-3 text-sm text-gray-400 mb-3">
-          <span className="bg-brand-red/20 text-brand-red px-3 py-1 rounded-full font-semibold">
-            {sportName}
+    <Link
+      to={`/articles?sport=${sportSlug}`}
+      className="group bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+    >
+      {/* Card Header */}
+      <div className="bg-gradient-to-r from-gray-900 to-gray-800 px-6 py-5 relative overflow-hidden">
+        <div className="absolute top-0 right-0 text-6xl opacity-10 transform translate-x-2 -translate-y-2">
+          {sportIcon}
+        </div>
+        <div className="flex items-center gap-3 text-sm text-gray-400 mb-2">
+          <span className="bg-brand-red/20 text-brand-red px-3 py-1 rounded-full font-semibold text-xs">
+            {sportIcon} {sportName}
           </span>
-          <span className="flex items-center gap-1">
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <span className="flex items-center gap-1 text-xs">
+            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             {article.readTime}
           </span>
         </div>
-        <h2 className="text-2xl md:text-3xl font-bold text-white">{article.title}</h2>
+        <h3 className="text-lg font-bold text-white group-hover:text-brand-red transition-colors">
+          {article.title}
+        </h3>
       </div>
 
-      {/* Article Content */}
-      <div className="px-8 py-8">
-        <div className="prose prose-lg max-w-none">
-          {article.sections.map((section, idx) => (
-            <div key={idx} className="mb-8">
-              <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-                <span className="w-8 h-8 bg-gradient-to-r from-brand-red to-brand-orange text-white rounded-full flex items-center justify-center text-sm font-bold">
-                  {idx + 1}
-                </span>
-                {section.heading}
-              </h3>
-              <p className="text-gray-600 leading-relaxed text-base pl-11">
-                {section.content}
-              </p>
-            </div>
+      {/* Card Body */}
+      <div className="px-6 py-5">
+        <p className="text-gray-600 text-sm leading-relaxed line-clamp-3">
+          {article.sections[0]?.content.substring(0, 150)}...
+        </p>
+
+        {/* Topics Preview */}
+        <div className="mt-4 flex flex-wrap gap-2">
+          {article.sections.slice(0, 3).map((section, idx) => (
+            <span key={idx} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+              {section.heading}
+            </span>
           ))}
         </div>
 
-        {/* Pro Tips Section */}
-        <div className="mt-10 bg-gradient-to-r from-brand-red/5 to-brand-orange/5 rounded-xl p-6 border border-brand-red/10">
-          <h4 className="font-bold text-gray-900 mb-4 flex items-center gap-2 text-lg">
-            <svg className="w-6 h-6 text-brand-red" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-            Pro Tips
-          </h4>
-          <ul className="space-y-3">
-            {article.tips.map((tip, idx) => (
-              <li key={idx} className="flex items-start gap-3 text-gray-700">
-                <svg className="w-5 h-5 text-brand-red mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                </svg>
-                <span>{tip}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* CTA Section */}
-        <div className="mt-8 bg-gradient-to-r from-gray-900 to-gray-800 rounded-xl p-8 text-center">
-          <h4 className="text-xl font-bold text-white mb-2">Ready to Get Started?</h4>
-          <p className="text-gray-300 mb-6">{article.cta.description}</p>
-          <Link
-            to={`/collections/${sportSlug}`}
-            className="inline-flex items-center gap-2 px-8 py-4 bg-brand-red text-white font-bold rounded-lg hover:bg-brand-orange transition-colors shadow-lg hover:shadow-xl"
-          >
-            {article.cta.text}
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        {/* Read More */}
+        <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
+          <span className="text-brand-red font-semibold text-sm group-hover:text-brand-orange transition-colors flex items-center gap-1">
+            Read Article
+            <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
-          </Link>
+          </span>
+          <span className="text-xs text-gray-400">{article.tips.length} Pro Tips</span>
         </div>
       </div>
-    </article>
+    </Link>
   );
 }
 
@@ -719,7 +700,7 @@ export default function SportPage() {
       {/* Blog Articles Section */}
       {articles.length > 0 && (
         <section id="articles" className="py-16 px-6 md:px-12 bg-gray-50">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
               <span className="text-brand-red font-semibold text-sm uppercase tracking-wider">Expert Knowledge</span>
               <h2 className="text-3xl md:text-4xl font-black text-gray-900 mt-2">
@@ -729,10 +710,21 @@ export default function SportPage() {
                 In-depth guides and expert insights to help you master every aspect of {sport.name.toLowerCase()}
               </p>
             </div>
-            <div className="space-y-12">
+            <div className="grid md:grid-cols-2 gap-6">
               {articles.map((article, idx) => (
-                <BlogArticle key={idx} article={article} sportSlug={sport.slug} sportName={sport.name} />
+                <BlogCard key={idx} article={article} sportSlug={sport.slug} sportName={sport.name} sportIcon={sport.icon} />
               ))}
+            </div>
+            <div className="text-center mt-8">
+              <Link
+                to={`/articles?sport=${sport.slug}`}
+                className="inline-flex items-center gap-2 px-6 py-3 bg-brand-red text-white font-semibold rounded-lg hover:bg-brand-orange transition-colors"
+              >
+                View All {sport.name} Articles
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </Link>
             </div>
           </div>
         </section>
@@ -754,12 +746,15 @@ export default function SportPage() {
             <div className="grid md:grid-cols-2 gap-8">
               {videos.map((video, idx) => (
                 <div key={idx} className="rounded-2xl overflow-hidden bg-gray-100 shadow-lg hover:shadow-xl transition-shadow">
-                  <div className="aspect-video">
+                  <div className="relative w-full" style={{paddingBottom: '56.25%'}}>
                     <iframe
-                      className="w-full h-full"
-                      src={`https://www.youtube.com/embed/${video.youtubeId}`}
+                      className="absolute top-0 left-0 w-full h-full"
+                      src={`https://www.youtube-nocookie.com/embed/${video.youtubeId}?rel=0&modestbranding=1`}
                       title={video.title}
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      frameBorder="0"
+                      loading="lazy"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerPolicy="strict-origin-when-cross-origin"
                       allowFullScreen
                     />
                   </div>
