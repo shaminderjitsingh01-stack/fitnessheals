@@ -65,7 +65,14 @@ function loadDeferredData({context}: LoaderFunctionArgs) {
       return null;
     });
 
-  return {featuredProducts};
+  const latestBlogs = context.storefront
+    .query(LATEST_BLOGS_QUERY)
+    .catch((error) => {
+      console.error(error);
+      return null;
+    });
+
+  return {featuredProducts, latestBlogs};
 }
 
 export const meta = ({matches}: MetaArgs<typeof loader>) => {
@@ -93,6 +100,82 @@ function BestsellerPlaceholder() {
         </div>
       ))}
     </div>
+  );
+}
+
+// Placeholder for blogs loading
+function BlogsPlaceholder() {
+  return (
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {[1, 2, 3].map((i) => (
+        <div key={i} className="bg-white rounded-2xl shadow-lg overflow-hidden">
+          <div className="h-48 bg-gray-200 animate-pulse" />
+          <div className="p-6">
+            <div className="h-4 bg-gray-200 rounded w-1/4 mb-4 animate-pulse" />
+            <div className="h-6 bg-gray-200 rounded w-3/4 mb-2 animate-pulse" />
+            <div className="h-4 bg-gray-200 rounded w-full mb-4 animate-pulse" />
+            <div className="h-4 bg-gray-200 rounded w-2/3 animate-pulse" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// Blog card for Shopify articles
+function ShopifyBlogCard({article}: {article: any}) {
+  const imageUrl = article.image?.url || 'https://images.unsplash.com/photo-1461896836934-fffcb290d082?w=600&h=400&fit=crop';
+  const publishedDate = new Date(article.publishedAt).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+
+  return (
+    <Link
+      to={`/blogs/${article.blog.handle}/${article.handle}`}
+      className="group bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+    >
+      {/* Card Image */}
+      <div className="relative h-48 overflow-hidden">
+        <img
+          src={imageUrl}
+          alt={article.title}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 p-4">
+          <div className="flex items-center gap-2 text-xs text-white/80 mb-1">
+            <span className="bg-brand-red px-2 py-0.5 rounded-full font-semibold">
+              {article.blog.title}
+            </span>
+            <span>{publishedDate}</span>
+          </div>
+          <h3 className="text-lg font-bold text-white group-hover:text-brand-red transition-colors line-clamp-2">
+            {article.title}
+          </h3>
+        </div>
+      </div>
+
+      {/* Card Body */}
+      <div className="px-6 py-5">
+        {article.excerpt && (
+          <p className="text-gray-600 text-sm leading-relaxed line-clamp-3 mb-4">
+            {article.excerpt}
+          </p>
+        )}
+
+        {/* Read More */}
+        <div className="flex items-center justify-between">
+          <span className="text-brand-red font-semibold text-sm group-hover:text-brand-orange transition-colors flex items-center gap-1">
+            Read Article
+            <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </span>
+        </div>
+      </div>
+    </Link>
   );
 }
 
@@ -267,7 +350,7 @@ function BlogCard({guide}: {guide: typeof SPORTS_GUIDES[0]}) {
 }
 
 export default function Homepage() {
-  const {featuredProducts, productsCount, sportsCount} = useLoaderData<typeof loader>();
+  const {featuredProducts, productsCount, sportsCount, latestBlogs} = useLoaderData<typeof loader>();
 
   return (
     <>
@@ -342,11 +425,40 @@ export default function Homepage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {SPORTS_GUIDES.map((guide, idx) => (
-              <BlogCard key={idx} guide={guide} />
-            ))}
-          </div>
+          {latestBlogs ? (
+            <Suspense fallback={<BlogsPlaceholder />}>
+              <Await resolve={latestBlogs}>
+                {(response) => {
+                  const articles: any[] = [];
+                  if (response?.blogs?.nodes) {
+                    for (const blog of response.blogs.nodes) {
+                      if (blog.articles?.nodes) {
+                        for (const article of blog.articles.nodes) {
+                          articles.push({...article, blog});
+                        }
+                      }
+                    }
+                  }
+                  if (articles.length === 0) {
+                    return (
+                      <div className="text-center py-8">
+                        <p className="text-gray-500">No articles yet. Add blog posts in Shopify admin.</p>
+                      </div>
+                    );
+                  }
+                  return (
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {articles.slice(0, 6).map((article: any) => (
+                        <ShopifyBlogCard key={article.id} article={article} />
+                      ))}
+                    </div>
+                  );
+                }}
+              </Await>
+            </Suspense>
+          ) : (
+            <BlogsPlaceholder />
+          )}
 
           {/* View All Articles Link */}
           <div className="text-center mt-10">
@@ -438,6 +550,30 @@ const PRODUCTS_COUNT_QUERY = `#graphql
     products(first: 250) {
       nodes {
         id
+      }
+    }
+  }
+` as const;
+
+const LATEST_BLOGS_QUERY = `#graphql
+  query latestBlogs {
+    blogs(first: 10) {
+      nodes {
+        handle
+        title
+        articles(first: 6, sortKey: PUBLISHED_AT, reverse: true) {
+          nodes {
+            id
+            handle
+            title
+            excerpt
+            publishedAt
+            image {
+              url
+              altText
+            }
+          }
+        }
       }
     }
   }
