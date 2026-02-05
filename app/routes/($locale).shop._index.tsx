@@ -1,4 +1,3 @@
-import {useState} from 'react';
 import {
   json,
   type MetaArgs,
@@ -6,22 +5,25 @@ import {
 } from '@shopify/remix-oxygen';
 import {useLoaderData, Link} from '@remix-run/react';
 import type {
-  ProductSortKeys,
+  Filter,
+  ProductCollectionSortKeys,
+  ProductFilter,
 } from '@shopify/hydrogen/storefront-api-types';
 import {
   Pagination,
+  flattenConnection,
   getPaginationVariables,
   getSeoMeta,
 } from '@shopify/hydrogen';
 
 import {Button} from '~/components/Button';
 import {ProductCard} from '~/components/ProductCard';
-import {type SortParam} from '~/components/SortFilter';
+import {SortFilter, type SortParam, FILTER_URL_PREFIX} from '~/components/SortFilter';
 import {PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
 import {routeHeaders} from '~/data/cache';
 import {seoPayload} from '~/lib/seo.server';
 import {getImageLoadingPriority} from '~/lib/const';
-import {SPORTS} from '~/data/sports';
+import {parseAsCurrency} from '~/lib/utils';
 
 export const headers = routeHeaders;
 
@@ -37,11 +39,28 @@ export async function loader({request, context}: LoaderFunctionArgs) {
     searchParams.get('sort') as SortParam,
   );
 
-  const {products} = await context.storefront.query(
-    SHOP_ALL_PRODUCTS_QUERY,
+  // Parse filters from URL
+  const filters = [...searchParams.entries()].reduce(
+    (filters, [key, value]) => {
+      if (key.startsWith(FILTER_URL_PREFIX)) {
+        const filterKey = key.substring(FILTER_URL_PREFIX.length);
+        filters.push({
+          [filterKey]: JSON.parse(value),
+        });
+      }
+      return filters;
+    },
+    [] as ProductFilter[],
+  );
+
+  // Query using a collection to get filters (using "all" or first available collection)
+  const {collection, collections} = await context.storefront.query(
+    SHOP_COLLECTION_QUERY,
     {
       variables: {
         ...paginationVariables,
+        handle: 'all', // Use "all" collection or fallback
+        filters,
         sortKey,
         reverse,
         country: context.storefront.i18n.country,
@@ -50,14 +69,75 @@ export async function loader({request, context}: LoaderFunctionArgs) {
     },
   );
 
-  if (!products) {
-    throw new Response('products', {status: 404});
+  // If no "all" collection, try getting products directly
+  if (!collection) {
+    const {products} = await context.storefront.query(
+      SHOP_ALL_PRODUCTS_QUERY,
+      {
+        variables: {
+          ...paginationVariables,
+          sortKey: sortKey as any,
+          reverse,
+          country: context.storefront.i18n.country,
+          language: context.storefront.i18n.language,
+        },
+      },
+    );
+
+    return json({
+      collection: null,
+      products,
+      appliedFilters: [],
+      collections: collections ? flattenConnection(collections) : [],
+      seo: seoPayload.home({url: request.url}),
+    });
   }
+
+  // Process applied filters
+  const allFilterValues = collection.products.filters.flatMap(
+    (filter) => filter.values,
+  );
+
+  const appliedFilters = filters
+    .map((filter) => {
+      const foundValue = allFilterValues.find((value) => {
+        const valueInput = JSON.parse(value.input as string) as ProductFilter;
+        if (valueInput.price && filter.price) {
+          return true;
+        }
+        return JSON.stringify(valueInput) === JSON.stringify(filter);
+      });
+      if (!foundValue) {
+        return null;
+      }
+
+      if (foundValue.id === 'filter.v.price') {
+        const input = JSON.parse(foundValue.input as string) as ProductFilter;
+        const min = parseAsCurrency(input.price?.min ?? 0, locale);
+        const max = input.price?.max
+          ? parseAsCurrency(input.price.max, locale)
+          : '';
+        const label = min && max ? `${min} - ${max}` : 'Price';
+
+        return {
+          filter,
+          label,
+        };
+      }
+      return {
+        filter,
+        label: foundValue.label,
+      };
+    })
+    .filter((filter): filter is NonNullable<typeof filter> => filter !== null);
 
   const seo = seoPayload.home({url: request.url});
 
   return json({
-    products,
+    collection,
+    products: null,
+    appliedFilters,
+    collections: flattenConnection(collections),
     seo,
   });
 }
@@ -66,20 +146,12 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
   return getSeoMeta(...matches.map((match) => (match.data as any).seo));
 };
 
-// Category filters
-const CATEGORIES = [
-  {name: 'All Products', slug: ''},
-  {name: 'Apparel', slug: 'apparel'},
-  {name: 'Footwear', slug: 'footwear'},
-  {name: 'Equipment', slug: 'equipment'},
-  {name: 'Accessories', slug: 'accessories'},
-];
-
 export default function Shop() {
-  const {products} = useLoaderData<typeof loader>();
-  const [showAllSports, setShowAllSports] = useState(false);
+  const {collection, products, appliedFilters, collections} = useLoaderData<typeof loader>();
 
-  const displayedSports = showAllSports ? SPORTS : SPORTS.slice(0, 6);
+  // Use collection products if available, otherwise fallback to direct products query
+  const productConnection = collection?.products || products;
+  const filters = collection?.products?.filters || [];
 
   return (
     <>
@@ -95,130 +167,62 @@ export default function Shop() {
           <p className="text-gray-300 text-lg max-w-2xl">
             Browse our complete collection of premium sports apparel and equipment
           </p>
-        </div>
-      </section>
-
-      {/* Filters Section */}
-      <section className="py-6 px-4 md:px-8 bg-white border-b">
-        <div className="max-w-7xl mx-auto">
-          {/* Category Filters */}
-          <div className="mb-6">
-            <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Categories</h3>
-            <div className="flex flex-wrap gap-2">
-              {CATEGORIES.map((cat) => (
-                <Link
-                  key={cat.slug}
-                  to={cat.slug ? `/collections/${cat.slug}` : '/shop'}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                    cat.slug === ''
-                      ? 'bg-brand-red text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  }`}
-                >
-                  {cat.name}
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          {/* Sport Filters */}
-          <div className="mb-6">
-            <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Shop by Sport</h3>
-            <div className="flex flex-wrap gap-2">
-              {displayedSports.map((sport) => (
-                <Link
-                  key={sport.slug}
-                  to={`/collections/${sport.slug}`}
-                  className="px-4 py-2 bg-gray-100 text-gray-700 hover:bg-brand-red hover:text-white rounded-full text-sm font-medium transition-colors flex items-center gap-1"
-                >
-                  <span>{sport.icon}</span>
-                  {sport.name}
-                </Link>
-              ))}
-              {!showAllSports && SPORTS.length > 6 && (
-                <button
-                  onClick={() => setShowAllSports(true)}
-                  className="px-4 py-2 bg-gray-200 text-gray-600 hover:bg-gray-300 rounded-full text-sm font-medium transition-colors"
-                >
-                  +{SPORTS.length - 6} more
-                </button>
-              )}
-            </div>
-          </div>
-
-          {/* Sort */}
-          <div className="flex items-center justify-between flex-wrap gap-4 pt-4 border-t">
-            <span className="text-gray-600 text-sm">
-              Showing all products
+          <div className="mt-4 flex items-center gap-4">
+            <span className="bg-brand-red/20 text-brand-red px-3 py-1 rounded-full text-sm font-semibold">
+              {productConnection?.nodes?.length || 0}+ Products
             </span>
-            <div className="flex items-center gap-2">
-              <span className="text-gray-600 text-sm">Sort by:</span>
-              <select
-                className="border border-gray-300 rounded-lg px-3 py-2 bg-white text-sm"
-                onChange={(e) => {
-                  const url = new URL(window.location.href);
-                  if (e.target.value) {
-                    url.searchParams.set('sort', e.target.value);
-                  } else {
-                    url.searchParams.delete('sort');
-                  }
-                  window.location.href = url.toString();
-                }}
-                defaultValue=""
-              >
-                <option value="">Featured</option>
-                <option value="price-low-high">Price: Low to High</option>
-                <option value="price-high-low">Price: High to Low</option>
-                <option value="best-selling">Best Selling</option>
-                <option value="newest">Newest</option>
-              </select>
-            </div>
           </div>
         </div>
       </section>
 
-      {/* Products Section */}
+      {/* Products Section with Filters */}
       <section className="py-8 px-4 md:px-8 bg-gray-50">
         <div className="max-w-7xl mx-auto">
-          <Pagination connection={products}>
-            {({
-              nodes,
-              isLoading,
-              PreviousLink,
-              NextLink,
-              hasNextPage,
-              hasPreviousPage,
-            }) => (
-              <>
-                {hasPreviousPage && (
-                  <div className="flex items-center justify-center mb-6">
-                    <Button as={PreviousLink} variant="secondary">
-                      {isLoading ? 'Loading...' : 'Load previous'}
-                    </Button>
-                  </div>
-                )}
+          <SortFilter
+            filters={filters as Filter[]}
+            appliedFilters={appliedFilters}
+            collections={collections}
+          >
+            <Pagination connection={productConnection}>
+              {({
+                nodes,
+                isLoading,
+                PreviousLink,
+                NextLink,
+                hasNextPage,
+                hasPreviousPage,
+              }) => (
+                <>
+                  {hasPreviousPage && (
+                    <div className="flex items-center justify-center mb-6">
+                      <Button as={PreviousLink} variant="secondary">
+                        {isLoading ? 'Loading...' : 'Load previous'}
+                      </Button>
+                    </div>
+                  )}
 
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6" data-test="product-grid">
-                  {nodes.map((product: any, i: number) => (
-                    <ProductCard
-                      key={product.id}
-                      product={product}
-                      loading={getImageLoadingPriority(i)}
-                      quickAdd
-                    />
-                  ))}
-                </div>
-
-                {hasNextPage && (
-                  <div className="flex items-center justify-center mt-8">
-                    <Button as={NextLink} variant="secondary">
-                      {isLoading ? 'Loading...' : 'Load more products'}
-                    </Button>
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6" data-test="product-grid">
+                    {nodes.map((product: any, i: number) => (
+                      <ProductCard
+                        key={product.id}
+                        product={product}
+                        loading={getImageLoadingPriority(i)}
+                        quickAdd
+                      />
+                    ))}
                   </div>
-                )}
-              </>
-            )}
-          </Pagination>
+
+                  {hasNextPage && (
+                    <div className="flex items-center justify-center mt-8">
+                      <Button as={NextLink} variant="secondary">
+                        {isLoading ? 'Loading...' : 'Load more products'}
+                      </Button>
+                    </div>
+                  )}
+                </>
+              )}
+            </Pagination>
+          </SortFilter>
         </div>
       </section>
     </>
@@ -226,7 +230,7 @@ export default function Shop() {
 }
 
 function getSortValuesFromParam(sortParam: SortParam | null): {
-  sortKey: ProductSortKeys;
+  sortKey: ProductCollectionSortKeys;
   reverse: boolean;
 } {
   switch (sortParam) {
@@ -247,7 +251,7 @@ function getSortValuesFromParam(sortParam: SortParam | null): {
       };
     case 'newest':
       return {
-        sortKey: 'CREATED_AT',
+        sortKey: 'CREATED',
         reverse: true,
       };
     default:
@@ -257,6 +261,67 @@ function getSortValuesFromParam(sortParam: SortParam | null): {
       };
   }
 }
+
+const SHOP_COLLECTION_QUERY = `#graphql
+  query ShopCollection(
+    $handle: String!
+    $country: CountryCode
+    $language: LanguageCode
+    $filters: [ProductFilter!]
+    $sortKey: ProductCollectionSortKeys!
+    $reverse: Boolean
+    $first: Int
+    $last: Int
+    $startCursor: String
+    $endCursor: String
+  ) @inContext(country: $country, language: $language) {
+    collection(handle: $handle) {
+      id
+      handle
+      title
+      description
+      products(
+        first: $first,
+        last: $last,
+        before: $startCursor,
+        after: $endCursor,
+        filters: $filters,
+        sortKey: $sortKey,
+        reverse: $reverse
+      ) {
+        filters {
+          id
+          label
+          type
+          values {
+            id
+            label
+            count
+            input
+          }
+        }
+        nodes {
+          ...ProductCard
+        }
+        pageInfo {
+          hasPreviousPage
+          hasNextPage
+          endCursor
+          startCursor
+        }
+      }
+    }
+    collections(first: 100) {
+      edges {
+        node {
+          title
+          handle
+        }
+      }
+    }
+  }
+  ${PRODUCT_CARD_FRAGMENT}
+` as const;
 
 const SHOP_ALL_PRODUCTS_QUERY = `#graphql
   query ShopAllProducts(

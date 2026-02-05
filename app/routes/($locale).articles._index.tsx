@@ -6,6 +6,58 @@ export const meta: MetaFunction = () => {
   return [{title: 'Articles | FitnessHeals'}];
 };
 
+// Unique images for each article
+const ARTICLE_IMAGES: Record<string, string> = {
+  // Cricket
+  'cricket-training-guide': 'https://images.unsplash.com/photo-1531415074968-036ba1b575da?w=600&h=400&fit=crop',
+  'cricket-equipment-guide': 'https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?w=600&h=400&fit=crop',
+  // Running
+  'running-shoe-guide': 'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=600&h=400&fit=crop',
+  'marathon-training': 'https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=600&h=400&fit=crop',
+  // Muay Thai
+  'muay-thai-beginners': 'https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=600&h=400&fit=crop',
+  'muay-thai-equipment': 'https://images.unsplash.com/photo-1517438322307-e67111335449?w=600&h=400&fit=crop',
+  // Soccer
+  'soccer-skills': 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=600&h=400&fit=crop',
+  'soccer-boot-guide': 'https://images.unsplash.com/photo-1511886929837-354d827aae26?w=600&h=400&fit=crop',
+  // Basketball
+  'basketball-fundamentals': 'https://images.unsplash.com/photo-1546519638-68e109498ffc?w=600&h=400&fit=crop',
+  'basketball-gear-guide': 'https://images.unsplash.com/photo-1519861531473-9200262188bf?w=600&h=400&fit=crop',
+  // Swimming
+  'swimming-technique': 'https://images.unsplash.com/photo-1530549387789-4c1017266635?w=600&h=400&fit=crop',
+  'swimming-gear-guide': 'https://images.unsplash.com/photo-1560090995-01632a28895b?w=600&h=400&fit=crop',
+  // Tennis
+  'tennis-fundamentals': 'https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=600&h=400&fit=crop',
+  'tennis-racket-guide': 'https://images.unsplash.com/photo-1617083934555-a0a4c2e44eb2?w=600&h=400&fit=crop',
+  // Cycling
+  'cycling-training': 'https://images.unsplash.com/photo-1541625602330-2277a4c46182?w=600&h=400&fit=crop',
+  'cycling-bike-guide': 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=600&h=400&fit=crop',
+  // Triathlon
+  'triathlon-training': 'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=600&h=400&fit=crop',
+  'triathlon-gear-guide': 'https://images.unsplash.com/photo-1559311648-d7c2964bf7a4?w=600&h=400&fit=crop',
+  // Golf
+  'golf-fundamentals': 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=600&h=400&fit=crop',
+  'golf-equipment-guide': 'https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?w=600&h=400&fit=crop',
+  // Yoga
+  'yoga-beginners': 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&h=400&fit=crop',
+  'yoga-equipment-guide': 'https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=600&h=400&fit=crop',
+};
+
+// Fallback sport images
+const SPORT_IMAGES: Record<string, string> = {
+  cricket: 'https://images.unsplash.com/photo-1531415074968-036ba1b575da?w=600&h=400&fit=crop',
+  running: 'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=600&h=400&fit=crop',
+  'muay-thai': 'https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=600&h=400&fit=crop',
+  soccer: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=600&h=400&fit=crop',
+  basketball: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?w=600&h=400&fit=crop',
+  swimming: 'https://images.unsplash.com/photo-1530549387789-4c1017266635?w=600&h=400&fit=crop',
+  tennis: 'https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=600&h=400&fit=crop',
+  cycling: 'https://images.unsplash.com/photo-1541625602330-2277a4c46182?w=600&h=400&fit=crop',
+  triathlon: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=600&h=400&fit=crop',
+  golf: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=600&h=400&fit=crop',
+  yoga: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&h=400&fit=crop',
+};
+
 // All sport articles with full content
 const ALL_ARTICLES: Array<{
   id: string;
@@ -685,30 +737,37 @@ export default function ArticlesIndex() {
 
 // Blog Card Component - Card format for 3-column grid
 function ArticleCard({article}: {article: typeof ALL_ARTICLES[0]}) {
+  const image = ARTICLE_IMAGES[article.id] || SPORT_IMAGES[article.sportSlug] || 'https://images.unsplash.com/photo-1461896836934-fffcb290d082?w=600&h=400&fit=crop';
+
   return (
     <Link
       to={`/sports/${article.sportSlug}#articles`}
       className="group bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col"
     >
-      {/* Card Header */}
-      <div className="bg-gradient-to-r from-gray-900 to-gray-800 px-5 py-4 relative overflow-hidden">
-        <div className="absolute top-0 right-0 text-5xl opacity-10 transform translate-x-2 -translate-y-2">
-          {article.sportIcon}
+      {/* Card Image */}
+      <div className="relative h-40 overflow-hidden">
+        <img
+          src={image}
+          alt={article.title}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 p-4">
+          <div className="flex items-center gap-2 text-xs text-white/80 mb-1">
+            <span className="bg-brand-red px-2 py-0.5 rounded-full font-semibold">
+              {article.sportIcon} {article.sport}
+            </span>
+            <span className="flex items-center gap-1">
+              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              {article.readTime}
+            </span>
+          </div>
+          <h3 className="text-base font-bold text-white group-hover:text-brand-red transition-colors line-clamp-2">
+            {article.title}
+          </h3>
         </div>
-        <div className="flex items-center gap-2 text-xs text-gray-400 mb-2">
-          <span className="bg-brand-red/20 text-brand-red px-2 py-0.5 rounded-full font-semibold">
-            {article.sportIcon} {article.sport}
-          </span>
-          <span className="flex items-center gap-1">
-            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            {article.readTime}
-          </span>
-        </div>
-        <h3 className="text-base font-bold text-white group-hover:text-brand-red transition-colors line-clamp-2">
-          {article.title}
-        </h3>
       </div>
 
       {/* Card Body */}

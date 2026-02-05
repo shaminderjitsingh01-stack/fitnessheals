@@ -99,6 +99,7 @@ const SPORTS_GUIDES = [
     sportSlug: 'cricket',
     icon: '🏏',
     readTime: '8 min read',
+    image: 'https://images.unsplash.com/photo-1531415074968-036ba1b575da?w=600&h=400&fit=crop',
     excerpt: 'Master your batting technique, bowling fundamentals, and fielding excellence with proven drills used by professional cricketers.',
     sections: [
       {
@@ -123,6 +124,7 @@ const SPORTS_GUIDES = [
     sportSlug: 'running',
     icon: '🏃',
     readTime: '6 min read',
+    image: 'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=600&h=400&fit=crop',
     excerpt: 'Understand your gait, choose the right shoes for your terrain, and learn proper fit and sizing for optimal performance.',
     sections: [
       {
@@ -147,6 +149,7 @@ const SPORTS_GUIDES = [
     sportSlug: 'muay-thai',
     icon: '🥊',
     readTime: '10 min read',
+    image: 'https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=600&h=400&fit=crop',
     excerpt: 'Learn the art of eight limbs with essential techniques, kicks, and conditioning tips for Muay Thai beginners.',
     sections: [
       {
@@ -202,25 +205,30 @@ function BlogCard({guide}: {guide: typeof SPORTS_GUIDES[0]}) {
       to={`/articles?sport=${guide.sportSlug}`}
       className="group bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
     >
-      {/* Card Header with gradient */}
-      <div className="bg-gradient-to-r from-gray-900 to-gray-800 px-6 py-5 relative overflow-hidden">
-        <div className="absolute top-0 right-0 text-6xl opacity-10 transform translate-x-2 -translate-y-2">
-          {guide.icon}
+      {/* Card Image */}
+      <div className="relative h-48 overflow-hidden">
+        <img
+          src={guide.image}
+          alt={guide.title}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 p-4">
+          <div className="flex items-center gap-2 text-xs text-white/80 mb-1">
+            <span className="bg-brand-red px-2 py-0.5 rounded-full font-semibold">
+              {guide.icon} {guide.sport}
+            </span>
+            <span className="flex items-center gap-1">
+              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              {guide.readTime}
+            </span>
+          </div>
+          <h3 className="text-lg font-bold text-white group-hover:text-brand-red transition-colors">
+            {guide.title}
+          </h3>
         </div>
-        <div className="flex items-center gap-3 text-sm text-gray-400 mb-2">
-          <span className="bg-brand-red/20 text-brand-red px-3 py-1 rounded-full font-semibold text-xs">
-            {guide.icon} {guide.sport}
-          </span>
-          <span className="flex items-center gap-1 text-xs">
-            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            {guide.readTime}
-          </span>
-        </div>
-        <h3 className="text-lg font-bold text-white group-hover:text-brand-red transition-colors">
-          {guide.title}
-        </h3>
       </div>
 
       {/* Card Body */}
@@ -362,16 +370,14 @@ export default function Homepage() {
 
           <div className="grid md:grid-cols-2 gap-8">
             {TRAINING_VIDEOS.map((video, idx) => (
-              <div key={idx} className="rounded-2xl overflow-hidden bg-gray-100 shadow-lg hover:shadow-xl transition-shadow">
-                <div className="relative w-full" style={{paddingBottom: '56.25%'}}>
+              <div key={idx} className="rounded-2xl overflow-hidden bg-white shadow-lg hover:shadow-xl transition-shadow">
+                <div className="relative bg-black" style={{paddingTop: '56.25%'}}>
                   <iframe
-                    className="absolute top-0 left-0 w-full h-full"
-                    src={`https://www.youtube-nocookie.com/embed/${video.youtubeId}?rel=0&modestbranding=1`}
+                    className="absolute inset-0 w-full h-full"
+                    src={`https://www.youtube.com/embed/${video.youtubeId}`}
                     title={video.title}
                     frameBorder="0"
-                    loading="lazy"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerPolicy="strict-origin-when-cross-origin"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
                   />
                 </div>
