@@ -16,6 +16,7 @@ import {
 
 import {AppSession} from '~/lib/session.server';
 import {getLocaleFromRequest} from '~/lib/utils';
+import {countries} from '~/data/countries';
 
 /**
  * Export a fetch handler in module format.
@@ -27,6 +28,21 @@ export default {
     executionContext: ExecutionContext,
   ): Promise<Response> {
     try {
+      // Check for invalid locale paths and redirect to base URL
+      const url = new URL(request.url);
+      const pathParts = url.pathname.split('/').filter(Boolean);
+      if (pathParts.length > 0) {
+        const firstPart = '/' + pathParts[0].toLowerCase();
+        // If path looks like a locale (e.g., /en-xx) but isn't in our countries list
+        if (/^\/[a-z]{2}-[a-z]{2}$/i.test(firstPart) && !countries[firstPart]) {
+          // Redirect to the same path without the invalid locale prefix
+          const newPath = '/' + pathParts.slice(1).join('/');
+          return new Response(null, {
+            status: 302,
+            headers: {Location: newPath || '/'},
+          });
+        }
+      }
       /**
        * Open a cache instance in the worker and a custom session instance.
        */
