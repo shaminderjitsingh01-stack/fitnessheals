@@ -1,41 +1,20 @@
 import type {Localizations} from '~/lib/type';
 
 export const countries: Localizations = {
+  // Singapore (Default)
   default: {
     label: 'Singapore (SGD $)',
     language: 'EN',
     country: 'SG',
     currency: 'SGD',
   },
+
+  // United States and Canada
   '/en-us': {
     label: 'United States (USD $)',
     language: 'EN',
     country: 'US',
     currency: 'USD',
-  },
-  '/en-ad': {
-    label: 'Andorra (EUR €)',
-    language: 'EN',
-    country: 'AD',
-    currency: 'EUR',
-  },
-  '/en-at': {
-    label: 'Austria (EUR €)',
-    language: 'EN',
-    country: 'AT',
-    currency: 'EUR',
-  },
-  '/en-au': {
-    label: 'Australia (AUD $)',
-    language: 'EN',
-    country: 'AU',
-    currency: 'AUD',
-  },
-  '/en-be': {
-    label: 'Belgium (EUR €)',
-    language: 'EN',
-    country: 'BE',
-    currency: 'EUR',
   },
   '/en-ca': {
     label: 'Canada (CAD $)',
@@ -43,11 +22,53 @@ export const countries: Localizations = {
     country: 'CA',
     currency: 'CAD',
   },
-  '/en-cn': {
-    label: 'China (CNY ¥)',
+
+  // United Kingdom
+  '/en-gb': {
+    label: 'United Kingdom (GBP £)',
     language: 'EN',
-    country: 'CN',
-    currency: 'CNY',
+    country: 'GB',
+    currency: 'GBP',
+  },
+
+  // Australia and New Zealand
+  '/en-au': {
+    label: 'Australia (AUD $)',
+    language: 'EN',
+    country: 'AU',
+    currency: 'AUD',
+  },
+  '/en-nz': {
+    label: 'New Zealand (NZD $)',
+    language: 'EN',
+    country: 'NZ',
+    currency: 'NZD',
+  },
+
+  // European Union (27 regions)
+  '/en-at': {
+    label: 'Austria (EUR €)',
+    language: 'EN',
+    country: 'AT',
+    currency: 'EUR',
+  },
+  '/en-be': {
+    label: 'Belgium (EUR €)',
+    language: 'EN',
+    country: 'BE',
+    currency: 'EUR',
+  },
+  '/en-bg': {
+    label: 'Bulgaria (EUR €)',
+    language: 'EN',
+    country: 'BG',
+    currency: 'EUR',
+  },
+  '/en-hr': {
+    label: 'Croatia (EUR €)',
+    language: 'EN',
+    country: 'HR',
+    currency: 'EUR',
   },
   '/en-cy': {
     label: 'Cyprus (EUR €)',
@@ -55,22 +76,22 @@ export const countries: Localizations = {
     country: 'CY',
     currency: 'EUR',
   },
-  '/de-de': {
-    label: 'Germany (EUR €)',
-    language: 'DE',
-    country: 'DE',
+  '/en-cz': {
+    label: 'Czech Republic (EUR €)',
+    language: 'EN',
+    country: 'CZ',
+    currency: 'EUR',
+  },
+  '/en-dk': {
+    label: 'Denmark (EUR €)',
+    language: 'EN',
+    country: 'DK',
     currency: 'EUR',
   },
   '/en-ee': {
     label: 'Estonia (EUR €)',
     language: 'EN',
     country: 'EE',
-    currency: 'EUR',
-  },
-  '/en-es': {
-    label: 'Spain (EUR €)',
-    language: 'EN',
-    country: 'ES',
     currency: 'EUR',
   },
   '/en-fi': {
@@ -85,11 +106,11 @@ export const countries: Localizations = {
     country: 'FR',
     currency: 'EUR',
   },
-  '/en-gb': {
-    label: 'United Kingdom (GBP £)',
-    language: 'EN',
-    country: 'GB',
-    currency: 'GBP',
+  '/de-de': {
+    label: 'Germany (EUR €)',
+    language: 'DE',
+    country: 'DE',
+    currency: 'EUR',
   },
   '/en-gr': {
     label: 'Greece (EUR €)',
@@ -97,11 +118,11 @@ export const countries: Localizations = {
     country: 'GR',
     currency: 'EUR',
   },
-  '/en-id': {
-    label: 'Indonesia (IDR Rp)',
+  '/en-hu': {
+    label: 'Hungary (EUR €)',
     language: 'EN',
-    country: 'ID',
-    currency: 'IDR',
+    country: 'HU',
+    currency: 'EUR',
   },
   '/en-ie': {
     label: 'Ireland (EUR €)',
@@ -109,29 +130,17 @@ export const countries: Localizations = {
     country: 'IE',
     currency: 'EUR',
   },
-  '/en-in': {
-    label: 'India (INR ₹)',
-    language: 'EN',
-    country: 'IN',
-    currency: 'INR',
-  },
   '/en-it': {
     label: 'Italy (EUR €)',
     language: 'EN',
     country: 'IT',
     currency: 'EUR',
   },
-  '/en-jp': {
-    label: 'Japan (JPY ¥)',
+  '/en-lv': {
+    label: 'Latvia (EUR €)',
     language: 'EN',
-    country: 'JP',
-    currency: 'JPY',
-  },
-  '/en-kr': {
-    label: 'South Korea (KRW ₩)',
-    language: 'EN',
-    country: 'KR',
-    currency: 'KRW',
+    country: 'LV',
+    currency: 'EUR',
   },
   '/en-lt': {
     label: 'Lithuania (EUR €)',
@@ -143,24 +152,6 @@ export const countries: Localizations = {
     label: 'Luxembourg (EUR €)',
     language: 'EN',
     country: 'LU',
-    currency: 'EUR',
-  },
-  '/en-lv': {
-    label: 'Latvia (EUR €)',
-    language: 'EN',
-    country: 'LV',
-    currency: 'EUR',
-  },
-  '/en-mc': {
-    label: 'Monaco (EUR €)',
-    language: 'EN',
-    country: 'MC',
-    currency: 'EUR',
-  },
-  '/en-me': {
-    label: 'Montenegro (EUR €)',
-    language: 'EN',
-    country: 'ME',
     currency: 'EUR',
   },
   '/en-mt': {
@@ -175,11 +166,11 @@ export const countries: Localizations = {
     country: 'NL',
     currency: 'EUR',
   },
-  '/en-nz': {
-    label: 'New Zealand (NZD $)',
+  '/en-pl': {
+    label: 'Poland (EUR €)',
     language: 'EN',
-    country: 'NZ',
-    currency: 'NZD',
+    country: 'PL',
+    currency: 'EUR',
   },
   '/en-pt': {
     label: 'Portugal (EUR €)',
@@ -187,10 +178,10 @@ export const countries: Localizations = {
     country: 'PT',
     currency: 'EUR',
   },
-  '/en-si': {
-    label: 'Slovenia (EUR €)',
+  '/en-ro': {
+    label: 'Romania (EUR €)',
     language: 'EN',
-    country: 'SI',
+    country: 'RO',
     currency: 'EUR',
   },
   '/en-sk': {
@@ -199,34 +190,22 @@ export const countries: Localizations = {
     country: 'SK',
     currency: 'EUR',
   },
-  '/en-sm': {
-    label: 'San Marino (EUR €)',
+  '/en-si': {
+    label: 'Slovenia (EUR €)',
     language: 'EN',
-    country: 'SM',
+    country: 'SI',
     currency: 'EUR',
   },
-  '/en-th': {
-    label: 'Thailand (THB ฿)',
+  '/en-es': {
+    label: 'Spain (EUR €)',
     language: 'EN',
-    country: 'TH',
-    currency: 'THB',
-  },
-  '/en-va': {
-    label: 'Vatican City (EUR €)',
-    language: 'EN',
-    country: 'VA',
+    country: 'ES',
     currency: 'EUR',
   },
-  '/en-vn': {
-    label: 'Vietnam (VND ₫)',
+  '/en-se': {
+    label: 'Sweden (EUR €)',
     language: 'EN',
-    country: 'VN',
-    currency: 'VND',
-  },
-  '/en-xk': {
-    label: 'Kosovo (EUR €)',
-    language: 'EN',
-    country: 'XK',
+    country: 'SE',
     currency: 'EUR',
   },
 };
