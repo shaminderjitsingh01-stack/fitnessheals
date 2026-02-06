@@ -1,0 +1,154 @@
+import {
+  json,
+  type MetaArgs,
+  type LoaderFunctionArgs,
+} from '@shopify/remix-oxygen';
+import {useLoaderData, Link} from '@remix-run/react';
+import {flattenConnection, getSeoMeta, Image} from '@shopify/hydrogen';
+
+import {PageHeader, Section} from '~/components/Text';
+import {Grid} from '~/components/Grid';
+import {getImageLoadingPriority, PAGINATION_SIZE} from '~/lib/const';
+import {seoPayload} from '~/lib/seo.server';
+import {routeHeaders} from '~/data/cache';
+import type {ArticleFragment} from 'storefrontapi.generated';
+import invariant from 'tiny-invariant';
+
+export const headers = routeHeaders;
+
+export const loader = async ({
+  request,
+  params,
+  context: {storefront},
+}: LoaderFunctionArgs) => {
+  const {language, country} = storefront.i18n;
+
+  invariant(params.blogHandle, 'Missing blog handle');
+
+  const {blog} = await storefront.query(BLOG_QUERY, {
+    variables: {
+      blogHandle: params.blogHandle,
+      pageBy: PAGINATION_SIZE,
+      language,
+    },
+  });
+
+  if (!blog?.articles) {
+    throw new Response('Not found', {status: 404});
+  }
+
+  const articles = flattenConnection(blog.articles).map((article) => {
+    const {publishedAt} = article!;
+    return {
+      ...article,
+      publishedAt: new Intl.DateTimeFormat(`${language}-${country}`, {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      }).format(new Date(publishedAt!)),
+    };
+  });
+
+  const seo = seoPayload.blog({blog, url: request.url});
+
+  return json({articles, seo, blogHandle: params.blogHandle, blogTitle: blog.title});
+};
+
+export const meta = ({matches}: MetaArgs<typeof loader>) => {
+  return getSeoMeta(...matches.map((match) => (match.data as any).seo));
+};
+
+export default function BlogPage() {
+  const {articles, blogHandle, blogTitle} = useLoaderData<typeof loader>();
+
+  return (
+    <>
+      <PageHeader heading={blogTitle || blogHandle} />
+      <Section>
+        <Grid as="ol" layout="blog">
+          {articles.map((article, i) => (
+            <ArticleCard
+              blogHandle={blogHandle}
+              article={article}
+              key={article.id}
+              loading={getImageLoadingPriority(i, 2)}
+            />
+          ))}
+        </Grid>
+      </Section>
+    </>
+  );
+}
+
+function ArticleCard({
+  blogHandle,
+  article,
+  loading,
+}: {
+  blogHandle: string;
+  article: ArticleFragment;
+  loading?: HTMLImageElement['loading'];
+}) {
+  return (
+    <li key={article.id}>
+      <Link to={`/blogs/${blogHandle}/${article.handle}`}>
+        {article.image && (
+          <div className="card-image aspect-[3/2]">
+            <Image
+              alt={article.image.altText || article.title}
+              className="object-cover w-full"
+              data={article.image}
+              aspectRatio="3/2"
+              loading={loading}
+              sizes="(min-width: 768px) 50vw, 100vw"
+            />
+          </div>
+        )}
+        <h2 className="mt-4 font-medium">{article.title}</h2>
+        <span className="block mt-1">{article.publishedAt}</span>
+      </Link>
+    </li>
+  );
+}
+
+const BLOG_QUERY = `#graphql
+query Blog(
+  $language: LanguageCode
+  $blogHandle: String!
+  $pageBy: Int!
+  $cursor: String
+) @inContext(language: $language) {
+  blog(handle: $blogHandle) {
+    title
+    seo {
+      title
+      description
+    }
+    articles(first: $pageBy, after: $cursor) {
+      edges {
+        node {
+          ...Article
+        }
+      }
+    }
+  }
+}
+
+fragment Article on Article {
+  author: authorV2 {
+    name
+  }
+  contentHtml
+  handle
+  id
+  image {
+    id
+    altText
+    url
+    width
+    height
+  }
+  publishedAt
+  title
+}
+`;
