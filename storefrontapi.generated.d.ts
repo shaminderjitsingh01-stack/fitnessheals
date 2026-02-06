@@ -368,6 +368,33 @@ export type ArticleDetailsQuery = {
   }>;
 };
 
+export type RelatedArticlesQueryVariables = StorefrontAPI.Exact<{
+  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
+  blogHandle: StorefrontAPI.Scalars['String']['input'];
+}>;
+
+export type RelatedArticlesQuery = {
+  blog?: StorefrontAPI.Maybe<
+    Pick<StorefrontAPI.Blog, 'title'> & {
+      articles: {
+        edges: Array<{
+          node: Pick<
+            StorefrontAPI.Article,
+            'id' | 'handle' | 'title' | 'publishedAt'
+          > & {
+            image?: StorefrontAPI.Maybe<
+              Pick<
+                StorefrontAPI.Image,
+                'id' | 'altText' | 'url' | 'width' | 'height'
+              >
+            >;
+          };
+        }>;
+      };
+    }
+  >;
+};
+
 export type BlogQueryVariables = StorefrontAPI.Exact<{
   language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
   blogHandle: StorefrontAPI.Scalars['String']['input'];
@@ -1359,6 +1386,10 @@ interface GeneratedQueryTypes {
   '#graphql\n  query ArticleDetails(\n    $language: LanguageCode\n    $blogHandle: String!\n    $articleHandle: String!\n  ) @inContext(language: $language) {\n    blog(handle: $blogHandle) {\n      articleByHandle(handle: $articleHandle) {\n        title\n        contentHtml\n        publishedAt\n        author: authorV2 {\n          name\n        }\n        image {\n          id\n          altText\n          url\n          width\n          height\n        }\n        seo {\n          description\n          title\n        }\n      }\n    }\n  }\n': {
     return: ArticleDetailsQuery;
     variables: ArticleDetailsQueryVariables;
+  };
+  '#graphql\n  query RelatedArticles(\n    $language: LanguageCode\n    $blogHandle: String!\n  ) @inContext(language: $language) {\n    blog(handle: $blogHandle) {\n      title\n      articles(first: 10, sortKey: PUBLISHED_AT, reverse: true) {\n        edges {\n          node {\n            id\n            handle\n            title\n            publishedAt\n            image {\n              id\n              altText\n              url\n              width\n              height\n            }\n          }\n        }\n      }\n    }\n  }\n': {
+    return: RelatedArticlesQuery;
+    variables: RelatedArticlesQueryVariables;
   };
   '#graphql\nquery Blog(\n  $language: LanguageCode\n  $blogHandle: String!\n  $pageBy: Int!\n  $cursor: String\n) @inContext(language: $language) {\n  blog(handle: $blogHandle) {\n    title\n    seo {\n      title\n      description\n    }\n    articles(first: $pageBy, after: $cursor) {\n      edges {\n        node {\n          ...Article\n        }\n      }\n    }\n  }\n}\n\nfragment Article on Article {\n  author: authorV2 {\n    name\n  }\n  contentHtml\n  handle\n  id\n  image {\n    id\n    altText\n    url\n    width\n    height\n  }\n  publishedAt\n  title\n}\n': {
     return: BlogQuery;
