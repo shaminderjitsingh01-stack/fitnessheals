@@ -1,0 +1,17 @@
+Handle,Title,Body (HTML),Sort Order,Published,Must Match,Rule: Product Column,Rule: Relation,Rule: Condition
+cricket,Cricket,"<p>Premium cricket equipment, apparel, and accessories for players of all levels. From English Willow bats to protective gear.</p>",best-selling,TRUE,all,tag,equals,cricket
+baseball,Baseball,"<p>Professional baseball gear including gloves, bats, and cleats. Everything you need to step up to the plate.</p>",best-selling,TRUE,all,tag,equals,baseball
+pickleball,Pickleball,"<p>Top-quality pickleball paddles, balls, and accessories. Gear up for the fastest-growing sport in the world.</p>",best-selling,TRUE,all,tag,equals,pickleball
+padel,Padel,"<p>Premium padel rackets, shoes, and equipment. Elevate your game with professional-grade gear.</p>",best-selling,TRUE,all,tag,equals,padel
+soccer,Soccer,"<p>Soccer cleats, balls, and protective equipment for the beautiful game. From training to match day.</p>",best-selling,TRUE,all,tag,equals,soccer
+basketball,Basketball,"<p>Basketball shoes, jerseys, and equipment for hoopers. Dominate the court with pro-level gear.</p>",best-selling,TRUE,all,tag,equals,basketball
+hockey,Hockey,"<p>Hockey sticks, helmets, and protective gear. Built for speed and safety on the ice.</p>",best-selling,TRUE,all,tag,equals,hockey
+running,Running,"<p>Running shoes, apparel, and accessories for every distance. From 5K to ultramarathon.</p>",best-selling,TRUE,all,tag,equals,running
+swimming,Swimming,"<p>Swimsuits, goggles, and training gear for lap swimmers and competitors alike.</p>",best-selling,TRUE,all,tag,equals,swimming
+muay-thai,Muay Thai,"<p>Muay Thai gloves, shorts, and protective equipment. Train like a champion with authentic gear.</p>",best-selling,TRUE,all,tag,equals,muay thai
+triathlon,Triathlon,"<p>Triathlon wetsuits, suits, and accessories. Gear engineered for swim, bike, and run.</p>",best-selling,TRUE,all,tag,equals,triathlon
+equipment,Equipment,"<p>Sports equipment across all disciplines. Bats, balls, rackets, sticks, and more.</p>",best-selling,TRUE,all,type,equals,Equipment
+apparel,Apparel,"<p>Performance sportswear for every athlete. Jerseys, shorts, suits, and more.</p>",best-selling,TRUE,all,type,equals,Apparel
+footwear,Footwear,"<p>Athletic footwear engineered for performance. Cleats, running shoes, court shoes, and more.</p>",best-selling,TRUE,all,type,equals,Footwear
+accessories,Accessories,"<p>Sports accessories to complete your kit. Bags, watches, goggles, and more.</p>",best-selling,TRUE,all,type,equals,Accessories
+bestsellers,Bestsellers,"<p>Our most popular products across all sports. Top-rated gear chosen by athletes.</p>",best-selling,TRUE,all,tag,equals,bestseller
