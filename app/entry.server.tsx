@@ -11,11 +11,15 @@ export default async function handleRequest(
   remixContext: EntryContext,
   context: AppLoadContext,
 ) {
+  const shopConfig: Record<string, string> = {};
+  if (context.env.PUBLIC_CHECKOUT_DOMAIN) {
+    shopConfig.checkoutDomain = context.env.PUBLIC_CHECKOUT_DOMAIN;
+  }
+  if (context.env.PUBLIC_STORE_DOMAIN) {
+    shopConfig.storeDomain = context.env.PUBLIC_STORE_DOMAIN;
+  }
   const {nonce, header, NonceProvider} = createContentSecurityPolicy({
-    shop: {
-      checkoutDomain: context.env.PUBLIC_CHECKOUT_DOMAIN,
-      storeDomain: context.env.PUBLIC_STORE_DOMAIN,
-    },
+    shop: shopConfig,
     scriptSrc: [
       "'self'",
       'https://cdn.shopify.com',
@@ -64,7 +68,10 @@ export default async function handleRequest(
   }
 
   responseHeaders.set('Content-Type', 'text/html');
-  responseHeaders.set('Content-Security-Policy', header);
+  responseHeaders.set(
+    'Content-Security-Policy',
+    header.replace(/\n/g, ' '),
+  );
   return new Response(body, {
     headers: responseHeaders,
     status: responseStatusCode,

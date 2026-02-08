@@ -63,16 +63,21 @@ export default {
       /**
        * Create Hydrogen's Storefront client.
        */
-      const {storefront} = createStorefrontClient({
+      const storefrontClientOptions: Parameters<typeof createStorefrontClient>[0] = {
         cache,
         waitUntil,
         i18n: getLocaleFromRequest(request),
         publicStorefrontToken: env.PUBLIC_STOREFRONT_API_TOKEN,
-        privateStorefrontToken: env.PRIVATE_STOREFRONT_API_TOKEN,
         storeDomain: env.PUBLIC_STORE_DOMAIN,
-        storefrontId: env.PUBLIC_STOREFRONT_ID,
         storefrontHeaders: getStorefrontHeaders(request),
-      });
+      };
+      if (env.PRIVATE_STOREFRONT_API_TOKEN) {
+        storefrontClientOptions.privateStorefrontToken = env.PRIVATE_STOREFRONT_API_TOKEN;
+      }
+      if (env.PUBLIC_STOREFRONT_ID) {
+        storefrontClientOptions.storefrontId = env.PUBLIC_STOREFRONT_ID;
+      }
+      const {storefront} = createStorefrontClient(storefrontClientOptions);
 
       /**
        * Create a client for Customer Account API.
@@ -81,8 +86,8 @@ export default {
         waitUntil,
         request,
         session,
-        customerAccountId: env.PUBLIC_CUSTOMER_ACCOUNT_API_CLIENT_ID,
-        shopId: env.SHOP_ID,
+        customerAccountId: env.PUBLIC_CUSTOMER_ACCOUNT_API_CLIENT_ID || '',
+        shopId: env.SHOP_ID || '',
       });
 
       const cart = createCartHandler({
