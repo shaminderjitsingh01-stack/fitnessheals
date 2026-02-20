@@ -182,29 +182,29 @@ function ShopifyBlogCard({article}: {article: any}) {
 // Comprehensive sports guides with full content (Blog format)
 const SPORTS_GUIDES = [
   {
-    title: 'The Complete Cricket Training Guide',
-    sport: 'Cricket',
-    sportSlug: 'cricket',
-    icon: '🏏',
+    title: 'The Complete Pickleball Guide',
+    sport: 'Pickleball',
+    sportSlug: 'pickleball',
+    icon: '🏓',
     readTime: '8 min read',
-    image: 'https://images.unsplash.com/photo-1531415074968-036ba1b575da?w=600&h=400&fit=crop',
-    excerpt: 'Master your batting technique, bowling fundamentals, and fielding excellence with proven drills used by professional cricketers.',
+    image: 'https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=600&h=400&fit=crop',
+    excerpt: 'Master your pickleball game with paddle selection tips, court strategy, and drills used by top players.',
     sections: [
       {
-        heading: 'Essential Batting Drills',
-        content: 'Master your batting technique with these proven drills used by professional cricketers. Start with the forward defensive stance, keeping your head still and eyes level. Practice the drive by stepping into the ball with your front foot, keeping your elbow high and following through towards the target.',
+        heading: 'Paddle Selection & Grip',
+        content: 'Choosing the right paddle is crucial. Graphite paddles offer lightweight control, while composite paddles provide more power. Consider paddle weight (6-14 oz), grip size, and surface texture. Use a continental grip for versatility at the net and switch to eastern for drives.',
       },
       {
-        heading: 'Bowling Fundamentals',
-        content: 'Develop a consistent bowling action by focusing on your run-up rhythm. Keep your non-bowling arm high for balance, and follow through completely after release. Practice seam position for swing bowling and wrist position for spin variations.',
+        heading: 'Court Strategy & Positioning',
+        content: 'Control the kitchen (non-volley zone) to dominate rallies. Move to the net together with your partner in doubles. Use the third-shot drop to transition from baseline to net. Keep your opponents deep with well-placed drives and then soften the pace with dinks.',
       },
       {
-        heading: 'Fielding Excellence',
-        content: 'Great fielders win matches. Work on your ground fielding by staying low with soft hands. Practice catching at different heights and distances. Develop quick reflexes with reaction drills and improve your throwing accuracy with target practice.',
+        heading: 'Essential Drills',
+        content: 'Practice dinking crosscourt for consistency and touch. Work on your serve accuracy by targeting specific zones. Drill the third-shot drop from various positions. Practice split-step timing to improve reaction speed at the net.',
       },
     ],
-    tips: ['Practice 30 minutes of batting drills daily', 'Video record your bowling action for analysis', 'Work on fitness - cricket demands endurance'],
-    cta: {text: 'Shop Cricket Gear', description: 'Get professional-grade cricket equipment'},
+    tips: ['Practice dinking 15 minutes every session', 'Focus on shot placement over power', 'Watch tournament play to learn advanced strategies'],
+    cta: {text: 'Shop Pickleball Gear', description: 'Get premium pickleball paddles and equipment'},
   },
   {
     title: 'Running Shoe Selection Guide',
@@ -231,58 +231,33 @@ const SPORTS_GUIDES = [
     tips: ['Replace shoes every 400-500 miles', 'Rotate between 2-3 pairs to extend lifespan', 'Consider custom orthotics for arch support issues'],
     cta: {text: 'Shop Running Shoes', description: 'Find your perfect running shoes'},
   },
-  {
-    title: 'Muay Thai Beginner\'s Handbook',
-    sport: 'Muay Thai',
-    sportSlug: 'muay-thai',
-    icon: '🥊',
-    readTime: '10 min read',
-    image: 'https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=600&h=400&fit=crop',
-    excerpt: 'Learn the art of eight limbs with essential techniques, kicks, and conditioning tips for Muay Thai beginners.',
-    sections: [
-      {
-        heading: 'The Art of Eight Limbs',
-        content: 'Muay Thai uses fists, elbows, knees, and shins as weapons. Begin with a proper fighting stance: feet shoulder-width apart, hands protecting your face, chin tucked. Learn the basic punches (jab, cross, hook, uppercut) before progressing to kicks and knees.',
-      },
-      {
-        heading: 'Essential Kicks',
-        content: 'The roundhouse kick is Muay Thai\'s signature technique. Pivot on your supporting foot, swing your hip through, and strike with your shin, not your foot. The teep (push kick) is your range-finder and defensive tool - snap it out from your hip to create distance.',
-      },
-      {
-        heading: 'Training and Conditioning',
-        content: 'Muay Thai fighters are among the fittest athletes. Include skipping rope for footwork, heavy bag work for power, pad work for timing, and clinch practice for close-range dominance. Stretch thoroughly to prevent injuries.',
-      },
-    ],
-    tips: ['Start with 2-3 classes per week', 'Invest in quality shin guards and gloves', 'Stay hydrated - training is intense'],
-    cta: {text: 'Shop Muay Thai Gear', description: 'Professional equipment for fighters'},
-  },
 ];
 
 // Training videos with YouTube embed IDs
 const TRAINING_VIDEOS = [
   {
-    title: 'Soccer Dribbling Skills Tutorial',
-    youtubeId: 'naEccnjzLxM',
-    sport: 'Soccer',
-    description: 'Learn essential dribbling techniques including the step-over, Cruyff turn, and elastico.',
+    title: 'Pickleball Tips for Beginners',
+    youtubeId: 'fOBqXfCI_Oc',
+    sport: 'Pickleball',
+    description: 'Learn essential pickleball techniques including serves, dinks, and kitchen strategy.',
   },
   {
-    title: 'Basketball Shooting Fundamentals',
-    youtubeId: 'UcnB9e5O5NY',
-    sport: 'Basketball',
-    description: 'Perfect your shooting form with proper hand placement, follow-through, and footwork.',
+    title: 'Pickleball Doubles Strategy',
+    youtubeId: 'Nrk8sqGmJBQ',
+    sport: 'Pickleball',
+    description: 'Master doubles positioning, third-shot drops, and net play to dominate the court.',
   },
   {
-    title: 'Swimming Freestyle Technique',
-    youtubeId: 'AQy_c30lNjI',
-    sport: 'Swimming',
-    description: 'Improve your freestyle stroke efficiency with proper body rotation and breathing.',
+    title: 'Running Form and Technique',
+    youtubeId: 'wRkeBVMQSgg',
+    sport: 'Running',
+    description: 'Optimize your running form to improve efficiency and prevent injuries.',
   },
   {
-    title: 'Triathlon Training Overview',
-    youtubeId: 'vdreP5AlUfY',
-    sport: 'Triathlon',
-    description: 'Complete triathlon preparation covering swim, bike, and run disciplines.',
+    title: 'Speed Training Drills for Runners',
+    youtubeId: 'aYGvR1TBKp4',
+    sport: 'Running',
+    description: 'Increase your pace with sprint intervals and plyometric exercises.',
   },
 ];
 
@@ -356,7 +331,7 @@ export default function Homepage() {
     <>
       <FitnessHero
         title="Gear Up for Every Sport"
-        subtitle="Premium sports apparel and equipment for athletes who demand the best. From cricket to triathlon, we've got you covered."
+        subtitle="Premium sports apparel and equipment for athletes who demand the best. Pickleball and running gear to keep you at your peak."
         ctaText="Shop Now"
         ctaLink="/shop"
         backgroundVideo="/hero-video.mp4"

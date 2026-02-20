@@ -9,40 +9,22 @@ export const meta: MetaFunction = () => {
 // Training videos with real YouTube IDs
 const TRAINING_VIDEOS = [
   {
-    title: 'Soccer Dribbling Skills Tutorial',
-    youtubeId: 'naEccnjzLxM',
-    sport: 'Soccer',
-    description: 'Learn essential dribbling techniques including the step-over, Cruyff turn, and elastico.',
+    title: 'Pickleball Tips for Beginners',
+    youtubeId: 'fOBqXfCI_Oc',
+    sport: 'Pickleball',
+    description: 'Learn essential pickleball techniques including serves, dinks, and kitchen strategy.',
   },
   {
-    title: 'Basketball Shooting Fundamentals',
-    youtubeId: 'UcnB9e5O5NY',
-    sport: 'Basketball',
-    description: 'Perfect your shooting form with proper hand placement, follow-through, and footwork.',
+    title: 'Pickleball Doubles Strategy',
+    youtubeId: 'Nrk8sqGmJBQ',
+    sport: 'Pickleball',
+    description: 'Master doubles positioning, third-shot drops, and net play to dominate the court.',
   },
   {
-    title: 'Swimming Freestyle Technique',
-    youtubeId: 'AQy_c30lNjI',
-    sport: 'Swimming',
-    description: 'Improve your freestyle stroke efficiency with proper body rotation and breathing.',
-  },
-  {
-    title: 'Triathlon Training Overview',
-    youtubeId: 'vdreP5AlUfY',
-    sport: 'Triathlon',
-    description: 'Complete triathlon preparation covering swim, bike, and run disciplines.',
-  },
-  {
-    title: 'Cricket Batting Masterclass',
-    youtubeId: 'xN1S3j-UbEs',
-    sport: 'Cricket',
-    description: 'Master batting techniques with professional tips on stance, grip, and shot selection.',
-  },
-  {
-    title: 'Tennis Serve Tutorial',
-    youtubeId: 'mh84ctWa2eo',
-    sport: 'Tennis',
-    description: 'Develop a powerful and accurate serve with proper toss, swing, and follow-through.',
+    title: 'Pickleball Paddle Selection Guide',
+    youtubeId: 'Y3q3KXGM-IY',
+    sport: 'Pickleball',
+    description: 'How to choose the right pickleball paddle for your playing style and skill level.',
   },
   {
     title: 'Running Form and Technique',
@@ -51,16 +33,16 @@ const TRAINING_VIDEOS = [
     description: 'Optimize your running form to improve efficiency and prevent injuries.',
   },
   {
-    title: 'Muay Thai Basic Combinations',
-    youtubeId: 'Gx9kDLCXPWA',
-    sport: 'Muay Thai',
-    description: 'Learn fundamental Muay Thai combinations for striking and defense.',
+    title: 'Speed Training Drills for Runners',
+    youtubeId: 'aYGvR1TBKp4',
+    sport: 'Running',
+    description: 'Increase your pace with sprint intervals and plyometric exercises.',
   },
   {
-    title: 'Yoga for Athletes',
-    youtubeId: 'v7AYKMP6rOE',
-    sport: 'Yoga',
-    description: 'Improve flexibility and recovery with yoga poses designed for athletes.',
+    title: 'Marathon Training Tips',
+    youtubeId: 'jMYKR3cGMz0',
+    sport: 'Running',
+    description: 'Complete marathon preparation covering training plans, nutrition, and race day strategy.',
   },
 ];
 
@@ -85,7 +67,7 @@ export default function VideosIndex() {
           >
             All Videos
           </Link>
-          {SPORTS.slice(0, 6).map((sport) => (
+          {SPORTS.map((sport) => (
             <Link
               key={sport.slug}
               to={`/videos?sport=${sport.slug}`}

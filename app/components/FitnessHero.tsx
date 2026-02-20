@@ -13,12 +13,12 @@ interface FitnessHeroProps {
 
 export function FitnessHero({
   title = 'Gear Up for Every Sport',
-  subtitle = 'Premium sports apparel and equipment for athletes who demand the best. From cricket to triathlon, we\'ve got you covered.',
+  subtitle = 'Premium sports apparel and equipment for athletes who demand the best. Pickleball and running gear to keep you at your peak.',
   ctaText = 'Shop Now',
   ctaLink = '/shop',
   backgroundImage,
   backgroundVideo,
-  sportsCount = 11,
+  sportsCount = 2,
   productsCount = 0,
 }: FitnessHeroProps) {
   return (

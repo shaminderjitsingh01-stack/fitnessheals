@@ -463,9 +463,7 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
     {
       title: 'Sports',
       links: [
-        {name: 'Cricket', to: '/sports/cricket'},
-        {name: 'Soccer', to: '/sports/soccer'},
-        {name: 'Basketball', to: '/sports/basketball'},
+        {name: 'Pickleball', to: '/sports/pickleball'},
         {name: 'Running', to: '/sports/running'},
         {name: 'View All', to: '/sports'},
       ],

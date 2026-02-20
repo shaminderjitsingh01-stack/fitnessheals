@@ -16,7 +16,7 @@ export default function SportsIndex() {
           </h1>
           <p className="text-primary/60 max-w-2xl mx-auto text-lg">
             Find the perfect gear and apparel for your favorite sport.
-            We cover 11 sports with premium equipment and clothing.
+            Premium equipment and clothing for pickleball and running.
           </p>
         </div>
 

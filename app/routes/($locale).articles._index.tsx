@@ -52,17 +52,8 @@ export function meta() {
 
 // Fallback sport images for blogs that don't have images
 const SPORT_IMAGES: Record<string, string> = {
-  cricket: 'https://images.unsplash.com/photo-1531415074968-036ba1b575da?w=600&h=400&fit=crop',
+  pickleball: 'https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=600&h=400&fit=crop',
   running: 'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=600&h=400&fit=crop',
-  'muay-thai': 'https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=600&h=400&fit=crop',
-  soccer: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=600&h=400&fit=crop',
-  basketball: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?w=600&h=400&fit=crop',
-  swimming: 'https://images.unsplash.com/photo-1530549387789-4c1017266635?w=600&h=400&fit=crop',
-  tennis: 'https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=600&h=400&fit=crop',
-  cycling: 'https://images.unsplash.com/photo-1541625602330-2277a4c46182?w=600&h=400&fit=crop',
-  triathlon: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=600&h=400&fit=crop',
-  golf: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=600&h=400&fit=crop',
-  yoga: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&h=400&fit=crop',
 };
 
 const DEFAULT_IMAGE = 'https://images.unsplash.com/photo-1461896836934-fffcb290d082?w=600&h=400&fit=crop';

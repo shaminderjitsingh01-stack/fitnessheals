@@ -21,7 +21,7 @@ export default function AboutPage() {
           </span>
           <h1 className="text-4xl md:text-6xl font-black mb-6">About FitnessHeals</h1>
           <p className="text-xl md:text-2xl text-white/80 leading-relaxed">
-            Your trusted partner for premium sports apparel and equipment. We empower athletes across 11 different sports to achieve their personal best.
+            Your trusted partner for premium sports apparel and equipment. We empower pickleball and running athletes to achieve their personal best.
           </p>
         </div>
       </section>
@@ -38,10 +38,10 @@ export default function AboutPage() {
               FitnessHeals was born from a simple observation: athletes deserve better. Too often, finding quality sports gear meant compromising - either settling for subpar equipment or paying premium prices at specialty stores with limited selection.
             </p>
             <p>
-              Founded in Singapore in 2024, we set out to create a destination where athletes of all levels could find premium equipment across multiple sports, all in one place. Whether you're a weekend warrior picking up cricket for the first time, a dedicated marathon runner, or a Muay Thai enthusiast, we believe you deserve gear that matches your ambition.
+              Founded in Singapore in 2024, we set out to create a destination where athletes of all levels could find premium equipment for the sports they love. Whether you're a pickleball enthusiast hitting the courts or a dedicated runner chasing your next PR, we believe you deserve gear that matches your ambition.
             </p>
             <p>
-              Today, FitnessHeals serves athletes across 11 different sports, carefully curating products that meet our rigorous standards for quality, performance, and value. We're not just selling gear - we're building a community of athletes who share our passion for fitness and sport.
+              Today, FitnessHeals serves pickleball and running athletes, carefully curating products that meet our rigorous standards for quality, performance, and value. We're not just selling gear - we're building a community of athletes who share our passion for fitness and sport.
             </p>
           </div>
         </div>
@@ -83,9 +83,9 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <span className="text-brand-red font-semibold text-sm uppercase tracking-wider">Our Expertise</span>
-            <h2 className="text-3xl md:text-4xl font-black text-white mt-2">11 Sports, One Destination</h2>
+            <h2 className="text-3xl md:text-4xl font-black text-white mt-2">2 Sports, One Destination</h2>
             <p className="text-gray-300 mt-4 max-w-2xl mx-auto">
-              From bat-and-ball sports to combat arts, from individual pursuits to team games - we've got you covered.
+              Pickleball and running - two of the fastest-growing sports, and we've got you covered for both.
             </p>
           </div>
           <div className="flex flex-wrap justify-center gap-4">
