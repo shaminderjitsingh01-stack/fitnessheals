@@ -65,7 +65,7 @@ export async function action({request, context}: ActionFunctionArgs) {
 
     return json({
       success: true,
-      message: "You're in! Check your inbox for a welcome gift.",
+      message: "You're in! Stay tuned for exclusive deals and updates.",
     });
   } catch (error) {
     console.error('Newsletter signup error:', error);
